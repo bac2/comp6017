@@ -105,7 +105,14 @@ app.del("/question/:qid", function (req, res) {
 //If you don't specify something, then it's not there! Needs to be changed. e.g. no vote param = no votes
 app.put("/question/:qid", function (req, res) {
 	req.models.question.get(req.params.qid, function(err, questions) {
-		questions.save({ question: req.param("question"), vote: req.param("vote") }, function (err) {
+		if (req.param("question")) {
+			questions.question = req.param("question");
+		}
+		if (req.param("vote")) {
+			questions.vote = req.param("vote");
+		}
+		
+		questions.save(function (err) {
 			if (err){
 	        	console.log(err);
 	            res.status(404);
