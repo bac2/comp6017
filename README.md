@@ -18,24 +18,24 @@ PUT /question/\<id\> - Edit a question
 DELETE /question/\<id\> - Remove a question
 
 
-GET /question/\<id\>/comments - List all comments for a question
+GET /question/\<id\>/comment - List all comments for a question
 
-POST /question/\<id\>/comments - Add a comment
+POST /question/\<id\>/comment - Add a comment
 
-GET /question/\<id\>/comments/\<id\> - Get a specific comment on a specific question
+GET /question/\<id\>/comment/\<id\> - Get a specific comment on a specific question
 
-PUT /question/\<id\>/comments/\<id\> - Edit a comment
+PUT /question/\<id\>/comment/\<id\> - Edit a comment
 
-DELETE /question/\<id\>/comments/\<id\> - Delete a comment
+DELETE /question/\<id\>/comment/\<id\> - Delete a comment
 
 SAME FOR ANSWERS
 
 
-POST /question/\<id\>/answers - Submit an answer to the question
+POST /question/\<id\>/answer - Submit an answer to the question
 
-GET /question/\<id\>/answers/\<id\> - Display a specific answer
+GET /question/\<id\>/answer/\<id\> - Display a specific answer
 
-PUT /question/\<id\>/answers/\<id\> - Edit an answer
+PUT /question/\<id\>/answer/\<id\> - Edit an answer
 
-DELETE /question/\<id\>/answers/\<id\> - Remove an answer
+DELETE /question/\<id\>/answer/\<id\> - Remove an answer
 
