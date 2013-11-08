@@ -70,6 +70,8 @@ app.post("/question", function (req, res) {
 	});
 });
 
+
+// QUESTION ID
 app.get('/question/:qid', function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     req.models.question.find({ id : req.params.qid }, function (err, questions) {
@@ -84,6 +86,21 @@ app.get('/question/:qid', function (req, res) {
         }
         res.end();
     });
+});
+
+
+app.del("/question/:qid", function (req, res) {
+	var person = req.models.question.find({ id: req.params.qid }).remove(function (err) {
+		console.log(err);
+        if (err) {
+        	console.log(err);
+            res.status(404);
+            res.end();
+        }
+        res.status(200);
+        res.end();
+	});
+	
 });
 
 app.get('/question/:qid/answer', function (req, res) {
