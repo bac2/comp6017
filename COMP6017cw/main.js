@@ -102,6 +102,21 @@ app.del("/question/:qid", function (req, res) {
 	});
 });
 
+//If you don't specify something, then it's not there! Needs to be changed. e.g. no vote param = no votes
+app.put("/question/:qid", function (req, res) {
+	req.models.question.get(req.params.qid, function(err, questions) {
+		questions.save({ question: req.param("question"), vote: req.param("vote") }, function (err) {
+			if (err){
+	        	console.log(err);
+	            res.status(404);
+	            res.end();				
+			}
+	        res.status(200);
+	        res.end();
+		});
+	});
+});
+
 app.get('/question/:qid/answer', function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     req.models.answer.find({ question_id : req.params.qid }, [ "vote", "Z" ], function (err, answers) {
