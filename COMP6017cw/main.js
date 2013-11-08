@@ -73,30 +73,33 @@ app.post("/question", function (req, res) {
 
 app.get('/question/:qid', function (req, res) {
     res.setHeader('Content-Type', 'application/json');
-    req.models.question.get(req.params.qid, function (err, questions) {
+    req.models.question.get(req.params.qid, function (err, question) {
         // SQL: SELECT q.id, q.question, q.vote FROM Question q WHERE q.id = id
         if (typeof err !== 'undefined') {
             console.error(err);
         }
-        questions.links = {answer: "/question/" + questions.id + "/answer/", comment: "/question/" + questions.id + "/comment/"};
-    	res.write(JSON.stringify(questions) + "\n");
+        question.links = {answer: "/question/" + question.id + "/answer/", comment: "/question/" + question.id + "/comment/"};
+    	res.write(JSON.stringify(question) + "\n");
     	res.end();
     });
 });
 
 
 app.del("/question/:qid", function (req, res) {
-	var person = req.models.question.find({ id: req.params.qid }).remove(function (err) {
-		console.log(err);
-        if (err) {
-        	console.log(err);
-            res.status(404);
-            res.end();
-        }
-        res.status(200);
-        res.end();
+	req.models.question.get(req.params.qid, function (err, question) {
+		if (err || typeof question === 'undefined') {
+			res.status(404);
+			res.end();
+			return;
+		}
+		question.remove(function (err) {
+			if (err) {
+				res.status(500);
+			}
+			res.status(200);
+		});
+		res.end();
 	});
-	
 });
 
 app.get('/question/:qid/answer', function (req, res) {
