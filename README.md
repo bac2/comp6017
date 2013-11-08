@@ -5,6 +5,9 @@ A repository for COMP6017 C/W Web service
 
 URLS
 ====
+
+questions
+---
 GET /question - Gets all questions
 
 POST /question - create a new question
@@ -17,6 +20,8 @@ PUT /question/\<id\> - Edit a question
 
 DELETE /question/\<id\> - Remove a question
 
+comments
+----
 
 GET /question/\<id\>/comment - List all comments for a question
 
@@ -30,6 +35,8 @@ DELETE /question/\<id\>/comment/\<id\> - Delete a comment
 
 SAME FOR ANSWERS
 
+answers
+----
 
 POST /question/\<id\>/answer - Submit an answer to the question
 
