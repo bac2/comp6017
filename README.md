@@ -38,6 +38,8 @@ SAME FOR ANSWERS
 answers
 ----
 
+GET /question/\<id\>/answer - Get all answers to a question
+
 POST /question/\<id\>/answer - Submit an answer to the question
 
 GET /question/\<id\>/answer/\<id\> - Display a specific answer
