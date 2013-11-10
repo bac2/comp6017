@@ -119,7 +119,7 @@ app.get('/question/:qid/answer', function (req, res) {
 
 app.get('/question/:qid/answer/:aid', function (req, res) {
     res.setHeader('Content-Type', 'application/json');
-    req.models.answer.get({ id : req.params.aid, question_id : req.params.qid }, function (err, answers) {
+    req.models.answer.find({ id : req.params.aid, question_id : req.params.qid }, function (err, answers) {
         //SQL: SELECT a.id, a.question_id, a.answer, a.vote FROM Answer a WHERE a.question_id = qid AND a.id = aid
         var a;
         if (typeof err !== 'undefined') {
