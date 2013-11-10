@@ -41,7 +41,7 @@ app.get('/question', function (req, res) {
             console.error(err);
         }
         for (q = 0; q < questions.length; q = q + 1) {
-            questions[q].links = {answer: "/question/" + q + "/answer/", comment: "/question/" + q + "/comment/"};
+            questions[q].links = {answer: "/question/" + questions[q].id + "/answer/", comment: "/question/" + questions[q].id + "/comment/"};
             array.push(questions[q]);
         }
         res.write(JSON.stringify(array) + "\n");
@@ -151,7 +151,7 @@ app.get('/question/:qid/answer/:aid', function (req, res) {
             console.error(err);
         }
         for (a = 0; a < answers.length; a = a + 1) {
-            answers[a].links = {question: "/question/" + answers[a].question_id + "/", comment: "/question/" + answers[a].question_id + "/answer/" + a + "/comment"};
+            answers[a].links = {question: "/question/" + answers[a].question_id + "/", comment: "/question/" + answers[a].question_id + "/answer/" + answers[a].id + "/comment"};
             res.write(JSON.stringify(answers[a]) + "\n");
         }
         res.end();
