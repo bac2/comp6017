@@ -71,20 +71,16 @@ app.post("/question", function (req, res) {
 });
 
 
-// QUESTION ID
 app.get('/question/:qid', function (req, res) {
     res.setHeader('Content-Type', 'application/json');
-    req.models.question.find({ id : req.params.qid }, function (err, questions) {
+    req.models.question.get(req.params.qid, function (err, questions) {
         // SQL: SELECT q.id, q.question, q.vote FROM Question q WHERE q.id = id
-        var q;
         if (typeof err !== 'undefined') {
             console.error(err);
         }
-        for (q = 0; q < questions.length; q = q + 1) {
-            questions[q].links = {answer: "/question/" + q + "/answer/", comment: "/question/" + q + "/comment/"};
-            res.write(JSON.stringify(questions[q]) + "\n");
-        }
-        res.end();
+        questions.links = {answer: "/question/" + questions.id + "/answer/", comment: "/question/" + questions.id + "/comment/"};
+    	res.write(JSON.stringify(questions) + "\n");
+    	res.end();
     });
 });
 
@@ -123,7 +119,7 @@ app.get('/question/:qid/answer', function (req, res) {
 
 app.get('/question/:qid/answer/:aid', function (req, res) {
     res.setHeader('Content-Type', 'application/json');
-    req.models.answer.find({ id : req.params.aid, question_id : req.params.qid }, function (err, answers) {
+    req.models.answer.get({ id : req.params.aid, question_id : req.params.qid }, function (err, answers) {
         //SQL: SELECT a.id, a.question_id, a.answer, a.vote FROM Answer a WHERE a.question_id = qid AND a.id = aid
         var a;
         if (typeof err !== 'undefined') {
