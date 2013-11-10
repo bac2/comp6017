@@ -27,11 +27,12 @@ app.get('/question', function( req, res ) {
 	res.setHeader('Content-Type', 'text/plain');
 	req.models.question.find([ "vote", "Z" ], function (err, questions) {
 		// SQL: SELECT q.id, q.question, q.vote FROM Question q ORDER BY q.vote DESC
+		var array = [];
 		for (q in questions){
-			res.write("id: " + questions[q].id + "\n");
-			res.write("question: " + questions[q].question + "\n");
-			res.write("votes: " + questions[q].vote + "\n\n");
+			questions[q]._links = {answer: "/question/"+q+"/answer/", comment: "/question/"+q+"/comment/"};
+			array.push(questions[q]);
 		}
+		res.write(JSON.stringify(array) + "\n");
 		res.end();
 	});
 });
@@ -41,9 +42,8 @@ app.get('/question/:qid', function( req, res ) {
 	req.models.question.find({ id : req.params.qid }, function (err, questions) {
 		// SQL: SELECT q.id, q.question, q.vote FROM Question q WHERE q.id = id
 		for (q in questions){
-			res.write("id: " + questions[q].id + "\n");
-			res.write("question: " + questions[q].question + "\n");
-			res.write("votes: " + questions[q].vote + "\n\n");
+			questions[q]._links = {answer: "/question/"+q+"/answer/", comment: "/question/"+q+"/comment/"};
+			res.write(JSON.stringify(questions[q]) + "\n");
 		}
 		res.end();
 	});
@@ -53,12 +53,13 @@ app.get('/question/:qid/answer', function( req, res ) {
 	res.setHeader('Content-Type', 'text/plain');
 	req.models.answer.find({ question_id : req.params.qid }, [ "vote", "Z" ], function (err, answers) {
 		//SQL: SELECT a.id, a.question_id, a.answer, a.vote FROM Answer a WHERE a.question_id = qid
+		
+		var array = [];
 		for (a in answers){
-			res.write("question id: " + answers[a].question_id + "\n");
-			res.write("id: " + answers[a].id + "\n");
-			res.write("answer: " + answers[a].answer + "\n");
-			res.write("votes: " + answers[a].vote + "\n\n");
+			answers[a]._links = {question: "/question/"+answers[a].question_id+"/", comment: "/question/"+answers[a].question_id+"/answer/"+a+"/comment"}
+			array.push(answers[a]);
 		}
+		res.write(JSON.stringify(array) +"\n");
 		res.end();
 	});
 });
@@ -68,10 +69,8 @@ app.get('/question/:qid/answer/:aid', function( req, res ) {
 	req.models.answer.find({ id : req.params.aid, question_id : req.params.qid }, function (err, answers) {
 		//SQL: SELECT a.id, a.question_id, a.answer, a.vote FROM Answer a WHERE a.question_id = qid AND a.id = aid
 		for (a in answers){
-			res.write("question id: " + answers[a].question_id + "\n");
-			res.write("id: " + answers[a].id + "\n");
-			res.write("answer: " + answers[a].answer + "\n");
-			res.write("votes: " + answers[a].vote + "\n\n");
+			answers[a]._links = {question: "/question/"+answers[a].question_id+"/", comment: "/question/"+answers[a].question_id+"/answer/"+a+"/comment"}
+			res.write(JSON.stringify(answers[a]) +"\n");
 		}
 		res.end();
 	});
