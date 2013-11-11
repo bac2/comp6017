@@ -70,13 +70,14 @@ app.post("/question", function (req, res) {
 	});
 });
 
-
 app.get('/question/:qid', function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     req.models.question.get(req.params.qid, function (err, question) {
         // SQL: SELECT q.id, q.question, q.vote FROM Question q WHERE q.id = id
-        if (typeof err !== 'undefined') {
-            console.error(err);
+        if (err || typeof err !== 'undefined') {
+        	res.status(404);
+        	res.end();
+        	return;
         }
         question.links = {answer: "/question/" + question.id + "/answer/", comment: "/question/" + question.id + "/comment/"};
     	res.write(JSON.stringify(question) + "\n");
@@ -100,9 +101,13 @@ app.del("/question/:qid", function (req, res) {
 		});
 		res.end();
 	});
+	req.models.answer.find({ question_id : req.params.qid }).remove(function (err){
+		if (err){
+			console.log(err);
+		}
+	});
 });
 
-//If you don't specify something, then it's not there! Needs to be changed. e.g. no vote param = no votes
 app.put("/question/:qid", function (req, res) {
 	req.models.question.get(req.params.qid, function(err, questions) {
 		if (req.param("question")) {
