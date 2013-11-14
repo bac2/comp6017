@@ -41,7 +41,7 @@ app.get('/question', function (req, res) {
             console.error(err);
         }
         for (q = 0; q < questions.length; q = q + 1) {
-            questions[q]['_links'] = {answer: "/question/" + questions[q].id + "/answer/", comment: "/question/" + questions[q].id + "/comment/"};
+            questions[q]['_links'] = {question: "/question/" + questions[q].id + "/", answer: "/question/" + questions[q].id + "/answer/", comment: "/question/" + questions[q].id + "/comment/"};
             array.push(questions[q]);
         }
         res.write(JSON.stringify(array) + "\n");
@@ -74,7 +74,7 @@ app.get('/question/:qid', function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     req.models.question.get(req.params.qid, function (err, question) {
         // SQL: SELECT q.id, q.question, q.vote FROM Question q WHERE q.id = id
-        if (err || typeof err !== 'undefined') {
+        if (err || typeof question === 'undefined') {
         	res.status(404);
         	res.end();
         	return;
@@ -135,7 +135,7 @@ app.get('/question/:qid/answer', function (req, res) {
         //SQL: SELECT a.id, a.question_id, a.answer, a.vote FROM Answer a WHERE a.question_id = qid
         var a,
             array = [];
-        if (typeof err !== 'undefined') {
+        if (err || typeof answers === 'undefined') {
             console.error(err);
         }
         for (a = 0; a < answers.length; a = a + 1) {
@@ -152,7 +152,7 @@ app.get('/question/:qid/answer/:aid', function (req, res) {
     req.models.answer.find({ id : req.params.aid, question_id : req.params.qid }, function (err, answers) {
         //SQL: SELECT a.id, a.question_id, a.answer, a.vote FROM Answer a WHERE a.question_id = qid AND a.id = aid
         var a;
-        if (typeof err !== 'undefined') {
+        if (err || typeof answers === 'undefined') {
             console.error(err);
         }
         for (a = 0; a < answers.length; a = a + 1) {
