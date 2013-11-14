@@ -25,7 +25,7 @@ app.listen(1337, "0.0.0.0");
 
 app.get('/', function (req, res) {
     res.setHeader('Content-Type', 'application/json');
-    var obj = {'links': {'question':'/question'}};
+    var obj = {'_links': {'question':'/question'}};
     res.end(JSON.stringify(obj) + "\n");
 });
 
@@ -41,7 +41,7 @@ app.get('/question', function (req, res) {
             console.error(err);
         }
         for (q = 0; q < questions.length; q = q + 1) {
-            questions[q].links = {answer: "/question/" + questions[q].id + "/answer/", comment: "/question/" + questions[q].id + "/comment/"};
+            questions[q]['_links'] = {answer: "/question/" + questions[q].id + "/answer/", comment: "/question/" + questions[q].id + "/comment/"};
             array.push(questions[q]);
         }
         res.write(JSON.stringify(array) + "\n");
@@ -79,7 +79,7 @@ app.get('/question/:qid', function (req, res) {
         	res.end();
         	return;
         }
-        question.links = {answer: "/question/" + question.id + "/answer/", comment: "/question/" + question.id + "/comment/"};
+        question['_links'] = {answer: "/question/" + question.id + "/answer/", comment: "/question/" + question.id + "/comment/"};
     	res.write(JSON.stringify(question) + "\n");
     	res.end();
     });
@@ -139,7 +139,7 @@ app.get('/question/:qid/answer', function (req, res) {
             console.error(err);
         }
         for (a = 0; a < answers.length; a = a + 1) {
-            answers[a].links = {question: "/question/" + answers[a].question_id + "/", comment: "/question/" + answers[a].question_id + "/answer/" + a + "/comment"};
+            answers[a]['_links'] = {question: "/question/" + answers[a].question_id + "/", comment: "/question/" + answers[a].question_id + "/answer/" + a + "/comment"};
             array.push(answers[a]);
         }
         res.write(JSON.stringify(array) + "\n");
@@ -156,7 +156,7 @@ app.get('/question/:qid/answer/:aid', function (req, res) {
             console.error(err);
         }
         for (a = 0; a < answers.length; a = a + 1) {
-            answers[a].links = {question: "/question/" + answers[a].question_id + "/", comment: "/question/" + answers[a].question_id + "/answer/" + answers[a].id + "/comment"};
+            answers[a]['_links'] = {question: "/question/" + answers[a].question_id + "/", comment: "/question/" + answers[a].question_id + "/answer/" + answers[a].id + "/comment"};
             res.write(JSON.stringify(answers[a]) + "\n");
         }
         res.end();
