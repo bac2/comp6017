@@ -51,9 +51,10 @@ app.get('/question', function (req, res) {
 
 app.post("/question", function (req, res) {
 	res.setHeader('Content-Type', 'application/json');
+	var question = req.body['question'];
 	req.models.question.create([
 	    {
-	        question: req.param("question"),
+	        question: question.text,
 	        vote: 0
 	    }
     ], function (err, items) {
@@ -110,11 +111,12 @@ app.del("/question/:qid", function (req, res) {
 
 app.put("/question/:qid", function (req, res) {
 	req.models.question.get(req.params.qid, function(err, questions) {
-		if (req.param("question")) {
-			questions.question = req.param("question");
+		var question = req.body['question'];
+		if (question.text) {
+			questions.question = question.text;
 		}
-		if (req.param("vote")) {
-			questions.vote = req.param("vote");
+		if (question.vote) {
+			questions.vote = question.vote;
 		}
 		
 		questions.save(function (err) {
