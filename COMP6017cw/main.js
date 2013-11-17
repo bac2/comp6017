@@ -70,6 +70,16 @@ app.post("/question", function (req, res) {
 	});
 });
 
+app.del("/question", function (req, res) {
+	req.models.question.find().remove(function (err) {
+		if (err) {
+			res.status(500);
+		}
+		res.status(200);
+		res.end();
+	});
+});
+
 app.get('/question/:qid', function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     req.models.question.get(req.params.qid, function (err, question) {
@@ -103,7 +113,7 @@ app.del("/question/:qid", function (req, res) {
 	});
 	req.models.answer.find({ question_id : req.params.qid }).remove(function (err){
 		if (err){
-			console.log(err);
+			res.status(500);
 		}
 	});
 });
