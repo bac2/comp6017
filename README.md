@@ -48,3 +48,14 @@ PUT /question/\<id\>/answer/\<id\> - Edit an answer
 
 DELETE /question/\<id\>/answer/\<id\> - Remove an answer
 
+Useful Status Codes
+====
+200 OK
+201 Created
+204 No Content (used as a response to a successful delete)
+304 Not Modified
+400 Bad Request (bad syntax)
+404 Not Found
+405 Method Not Allowed
+500 Internal Server Error
+
