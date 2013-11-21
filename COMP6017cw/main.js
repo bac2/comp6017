@@ -19,6 +19,7 @@ app.use(orm.express("sqlite://../database/sqlite.db", {
             }
             models.question = db.models.question;
             models.answer = db.models.answer;
+            models.comment = db.models.comment;
             next();
         });
     }

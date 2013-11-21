@@ -1,6 +1,7 @@
 CREATE TABLE question(
   id INTEGER PRIMARY KEY,
-  question TEXT,
+  title TEXT,
+  body TEXT, 
   vote INTEGER
 );
 
