@@ -14,9 +14,14 @@ module.exports = function (db, cb) {
 		answer : String,
 		vote : Number
 	});
-	db.define('comment', {
+	db.define('question_comment', {
 		id : Number,
-		foreign_id : Number,
+		question_id : Number,
+		comment : String
+	});
+	db.define('answer_comment', {
+		id : Number,
+		answer_id : Number,
 		comment : String
 	});	
 	return cb();	
