@@ -17,8 +17,7 @@ module.exports = function (db, cb) {
 	db.define('comment', {
 		id : Number,
 		foreign_id : Number,
-		comment : String,
-		vote : Number
+		comment : String
 	});	
 	return cb();	
 };
