@@ -27,6 +27,8 @@ GET /question/\<id\>/comment - List all comments for a question
 
 POST /question/\<id\>/comment - Add a comment
 
+DELETE /question/\<id\>/comment - Delete all comments for a question
+
 GET /question/\<id\>/comment/\<id\> - Get a specific comment on a specific question
 
 PUT /question/\<id\>/comment/\<id\> - Edit a comment
@@ -41,6 +43,8 @@ answers
 GET /question/\<id\>/answer - Get all answers to a question
 
 POST /question/\<id\>/answer - Submit an answer to the question
+
+DELETE /question/\<id\>/answer - Delete all answers to a question
 
 GET /question/\<id\>/answer/\<id\> - Display a specific answer
 

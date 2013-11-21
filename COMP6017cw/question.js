@@ -1,3 +1,6 @@
+/*jslint node: true */
+"use strict";
+
 var	utils = require("./utils.js");
 
 var root = function (req, res) {
@@ -74,28 +77,6 @@ var question = function (req, res) {
     	    });
     	},
     	
-    	del: function (req, res) {
-    		req.models.question.get(req.params.qid, function (err, question) {
-    			if (err || typeof question === 'undefined') {
-    				res.status(404);
-    				res.end();
-    				return;
-    			}
-    			question.remove(function (err) {
-    				if (err) {
-    					res.status(500);
-    				}
-    				res.status(200);
-    			});
-    			res.end();
-    		});
-    		req.models.answer.find({ question_id : req.params.qid }).remove(function (err){
-    			if (err){
-    				res.status(500);
-    			}
-    		});
-    	},
-    	
     	put: function (req, res) {
     		req.models.question.get(req.params.qid, function(err, questions) {
     			var question = req.body['question'];
@@ -116,7 +97,30 @@ var question = function (req, res) {
     		        res.end();
     			});
     		});
+    	},
+    	
+    	del: function (req, res) {
+    		req.models.question.get(req.params.qid, function (err, question) {
+    			if (err || typeof question === 'undefined') {
+    				res.status(404);
+    				res.end();
+    				return;
+    			}
+    			question.remove(function (err) {
+    				if (err) {
+    					res.status(500);
+    				}
+    				res.status(200);
+    			});
+    			res.end();
+    		});
+    		req.models.answer.find({ question_id : req.params.qid }).remove(function (err){
+    			if (err){
+    				res.status(500);
+    			}
+    		});
     	}
+    	
     });
 };
 

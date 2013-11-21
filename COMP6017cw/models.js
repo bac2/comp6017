@@ -1,3 +1,6 @@
+/*jslint node: true */
+"use strict";
+
 module.exports = function (db, cb) {
 	db.define('question', {
 		id : Number,

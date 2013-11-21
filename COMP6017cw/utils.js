@@ -1,3 +1,6 @@
+/*jslint node: true */
+"use strict";
+
 var restful = function (req, res, handlers) {
 	var method = req.route.method;
 	if (!(method in handlers)) {
@@ -7,6 +10,6 @@ var restful = function (req, res, handlers) {
 	{
 		handlers[method](req, res);
 	}	
-}
+};
 
 exports.restful = restful;
