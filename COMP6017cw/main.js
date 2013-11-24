@@ -19,8 +19,8 @@ app.use(orm.express("sqlite://../database/sqlite.db", {
             }
             models.question = db.models.question;
             models.answer = db.models.answer;
-            models.q_comment = db.models.answer_comment;
-            models.a_comment = db.models.question_comment;
+            models.question_comment = db.models.question_comment;
+            models.answer_comment = db.models.answer_comment;
             next();
         });
     }
