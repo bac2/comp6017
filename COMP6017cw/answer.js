@@ -28,7 +28,7 @@ var root = function (req, res) {
         	
         },
         
-        del: function (req, res) {
+        'delete': function (req, res) {
         	
         }
     
@@ -60,7 +60,7 @@ var answer = function (req, res) {
         	
         },
         
-        del: function (req, res) {
+        'delete': function (req, res) {
         	
         }
     	

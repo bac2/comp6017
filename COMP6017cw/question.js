@@ -46,7 +46,7 @@ var root = function (req, res) {
     		});    		
     	}, 
     	
-    	del: function (req, res) {
+    	"delete": function (req, res) {
     		req.models.question.find().remove(function (err) {
     			if (err) {
     				res.status(500);
@@ -99,7 +99,7 @@ var question = function (req, res) {
     		});
     	},
     	
-    	del: function (req, res) {
+    	'delete': function (req, res) {
     		req.models.question.get(req.params.qid, function (err, question) {
     			if (err || typeof question === 'undefined') {
     				res.status(404);

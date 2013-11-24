@@ -14,7 +14,7 @@ var root = function (req, res) {
     		
         },
         
-        del: function (req, res) {
+        'delete': function (req, res) {
         	
         }
 
@@ -32,7 +32,7 @@ var comment = function (req, res) {
     		
         },
         
-		del: function (req, res) {
+		'delete': function (req, res) {
 		    		
 		}
         
