@@ -52,7 +52,6 @@ var root = function (req, res) {
         },
         
         'delete': function (req, res) {
-        	
         }
 
     });
@@ -62,7 +61,18 @@ var comment = function (req, res) {
     utils.restful(req, res, {
     
     	get: function (req, res) {
-    		
+    	    res.setHeader('Content-Type', 'application/json');
+    	    req.models.question_comment.get(req.params.cid, function (err, comments) {
+    	        if (err || typeof comments === 'undefined') {
+    	        	res.status(500);
+    	        	res.end();
+    	            console.error(err);
+    	        }    	        
+	            comment['_links'] = {question: "/question/" + req.params.qid + "/"};
+    	        res.status(200);
+    	        res.write(JSON.stringify(comments) + "\n");
+    	        res.end();
+    	    });
         },
         
     	put: function (req, res) {
