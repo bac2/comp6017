@@ -12,7 +12,7 @@ var root = function (req, res) {
     	        // SQL: SELECT q.id, q.question, q.vote FROM Question q ORDER BY q.vote DESC
     	        var q,
     	            array = [];
-    	        if (typeof err !== 'undefined') {
+    	        if (err) {
     	            console.error(err);
     	        }
     	        for (q = 0; q < questions.length; q = q + 1) {
@@ -29,12 +29,13 @@ var root = function (req, res) {
     		var question = req.body['question'];
     		req.models.question.create([
     		    {
-    		        question: question.text,
+    		        title: question.title,
+    		        body: question.body,
     		        vote: 0
     		    }
     	    ], function (err, items) {
     			var i;
-    	        if (typeof err !== 'undefined') {
+    	        if (err) {
     	            console.error(err);
     	        }
     	        for( i = 0; i < items.length; i = i + 1) {
