@@ -6,23 +6,27 @@ module.exports = function (db, cb) {
 		id : Number,
 		title : String,
 		body : String,
-		vote : Number
+		vote : Number,
+		last_modified : Date
 	});	
 	db.define('answer', {
 		id : Number,
 		question_id : Number,
-		body : String,
-		vote : Number
+		answer : String,
+		vote : Number,
+		last_modified : Date
 	});
 	db.define('question_comment', {
 		id : Number,
 		question_id : Number,
-		body : String
+		comment : String,
+		last_modified : Date
 	});
 	db.define('answer_comment', {
 		id : Number,
 		answer_id : Number,
-		body: String
+		comment : String,
+		last_modified : Date
 	});	
 	return cb();	
 };
