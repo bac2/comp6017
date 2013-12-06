@@ -24,21 +24,21 @@ curl -D- -X GET http://localhost:1337/question/1/comment --max-time 1
 
 # Get a specific answer to a question
 echo "Get a specific answer to a question:"
-curl -D- -X GET http://localhost:1337/question/1/answer/0 --max-time 1
+curl -D- -X GET http://localhost:1337/question/1/answer/1 --max-time 1
 
 # Get a specific comment on a question
 echo "Get a specific comment on a question:"
-curl -D- -X GET http://localhost:1337/question/1/answer/0/comment --max-time 1
+curl -D- -X GET http://localhost:1337/question/1/answer/1/comment --max-time 1
 
 # Add a new answer to a question
 echo "Add a new answer to a question:"
-curl -D- -X POST http://localhost:1337/question/1/answer -H "Content-Type: application/json" -d '{"answer":{"body":"Several hundred"}}' --max-time 1
+curl -D- -X POST http://localhost:1337/question/1/answer -H "Content-Type: application/json" -d '{"answer":{"answer":"Several hundred"}}' --max-time 1
 
 # Add a new comment to a question
 echo "Add a new comment to a question:"
-curl -D- -X POST http://localhost:1337/question/1/comment -H "Content-Type: application/json" -d '{"comment":{"body":"Good question..."}}' --max-time 1
+curl -D- -X POST http://localhost:1337/question/1/comment -H "Content-Type: application/json" -d '{"comment":{"comment":"Good question..."}}' --max-time 1
 
 # Add a new comment on an answer
 echo "Add a new comment to an answer:"
-curl -D- -X POST http://localhost:1337/question/1/answer/0/comment -H "Content-Type: application/json" -d '{"comment":{"body":"Good answer..."}}' --max-time 1
+curl -D- -X POST http://localhost:1337/question/1/answer/1/comment -H "Content-Type: application/json" -d '{"comment":{"comment":"Good answer..."}}' --max-time 1
 

@@ -11,7 +11,11 @@ var root = function (req, res) {
     	    req.models.question_comment.find({ question_id : req.params.qid }, function (err, comments) {
     	        var c,
     	            array = [];
-    	        if (err || typeof comments === 'undefined') {
+				if (comments.length == 0) {
+                	res.status(404);
+                	res.end();
+                }
+    	        if (err) {
     	        	res.status(500);
     	        	res.end();
     	            console.error(err);
@@ -33,12 +37,14 @@ var root = function (req, res) {
     		req.models.question_comment.create([
     		    {
     		        question_id: req.params.qid,
-    		        body: comment.body,
+    		        comment: comment.comment,
+    		        last_modified: new Date(),
+    		        
     		    }
     	    ], function (err, items) {
     			var i;
     	        if (err) {
-    	        	res.status(500);
+    	        	res.status(400);
     	        	res.end();
     	            console.error(err);
     	        }
@@ -63,7 +69,7 @@ var comment = function (req, res) {
     	get: function (req, res) {
     	    res.setHeader('Content-Type', 'application/json');
     	    req.models.question_comment.get(req.params.cid, function (err, comments) {
-    	        if (err || typeof comments === 'undefined') {
+    	        if (err) {
     	        	res.status(500);
     	        	res.end();
     	            console.error(err);

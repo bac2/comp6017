@@ -1,3 +1,5 @@
+PRAGMA foreign_keys = ON;
+
 CREATE TABLE question(
   id INTEGER PRIMARY KEY,
   title TEXT,
@@ -12,7 +14,7 @@ CREATE TABLE answer(
   answer TEXT,
   vote INTEGER,
   last_modified DATE,
-  FOREIGN KEY(question_id) REFERENCES question(id)
+  FOREIGN KEY(question_id) REFERENCES question(id) ON DELETE CASCADE
 );
 
 CREATE TABLE question_comment(
@@ -20,7 +22,7 @@ CREATE TABLE question_comment(
   question_id INTEGER,
   comment TEXT,
   last_modified DATE,
-  FOREIGN KEY(question_id) REFERENCES question(id)
+  FOREIGN KEY(question_id) REFERENCES question(id) ON DELETE CASCADE
 );
 
 CREATE TABLE answer_comment(
@@ -28,5 +30,5 @@ CREATE TABLE answer_comment(
   answer_id INTEGER,
   comment TEXT,
   last_modified DATE,
-  FOREIGN KEY(answer_id) REFERENCES answer(id)
+  FOREIGN KEY(answer_id) REFERENCES answer(id) ON DELETE CASCADE
 );

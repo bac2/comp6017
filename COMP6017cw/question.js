@@ -15,7 +15,7 @@ var root = function (req, res) {
     	            since_date;
     	        if (err) {
     	            console.error(err);
-    	            res.status(400);
+    	            res.status(500);
     	            res.end();
     	        }
     	        if (req.header("if-modified-since")) {
@@ -65,10 +65,10 @@ var root = function (req, res) {
     	"delete": function (req, res) {
     		req.models.question.find().remove(function (err) {
     			if (err) {
-    				res.status(400);
+    				res.status(500);
     	            res.end();
     			}
-    			res.status(200);
+    			res.status(204);
     			res.end();
     		});
     	},
@@ -88,7 +88,7 @@ var question = function (req, res) {
     	    req.models.question.get(req.params.qid, function (err, question) {
     	        // SQL: SELECT q.id, q.question, q.vote FROM Question q WHERE q.id = id
     	        if (err) {
-    	        	res.status(400);
+    	        	res.status(404);
     	        	res.end();
     	        	return;
     	        }
@@ -131,17 +131,17 @@ var question = function (req, res) {
     	
     	'delete': function (req, res) {
     		req.models.question.get(req.params.qid, function (err, question) {
-    			if (err || typeof question === 'undefined') {
+    			if (err) {
     				res.status(404);
     				res.end();
     				return;
     			}
     			question.remove(function (err) {
     				if (err) {
-    					res.status(400);
+    					res.status(500);
     	            	res.end();
     				}
-    				res.status(200);
+    				res.status(204);
     			});
     			
         		req.models.answer.find({ question_id : req.params.qid }).remove(function (err){
