@@ -21,8 +21,9 @@ var root = function (req, res) {
                     reply = false;
                 if (err) {
                     console.error(err);
-                    res.status(500);
+                    res.status(404);
                     res.end();
+                    return;
                 }
                 if (req.header("if-modified-since")) {
                     since_date = new Date(req.header("if-modified-since"));
@@ -55,6 +56,11 @@ var root = function (req, res) {
                 return;
             }
             comment = req.body.comment;
+            if (!comment || !comment.comment) {
+            	res.status(400);
+            	res.end();
+            	return;
+            }
             req.models.answer_comment.create([
                 {
                     answer_id: req.params.aid,
@@ -133,6 +139,12 @@ var comment = function (req, res) {
             }
             req.models.answer_comment.get(req.params.cid, function (err, comments) {
                 var comment = req.body.comment;
+                //Check for malformed argument
+                if (!comment || !comment.comment) {
+                	res.status(400);
+                	res.end();
+                	return;
+                }
                 if (err) {
                     console.error(err);
                 }

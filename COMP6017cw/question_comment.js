@@ -57,6 +57,12 @@ var root = function (req, res) {
                 return;
             }
             comment = req.body.comment;
+            //Check for malformed argument
+            if (!comment || !comment.comment) {
+            	res.status(400);
+            	res.end();
+            	return;
+            }
             req.models.question_comment.create([
                 {
                     question_id: req.params.qid,
@@ -135,6 +141,12 @@ var comment = function (req, res) {
             }
             req.models.question_comment.get(req.params.cid, function (err, comments) {
                 var comment = req.body.comment;
+                //Check for malformed argument
+                if (!comment || !comment.comment) {
+                	res.status(400);
+                	res.end();
+                	return;
+                }
                 if (err) {
                     console.error(err);
                 }

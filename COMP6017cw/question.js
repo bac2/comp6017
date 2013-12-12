@@ -48,6 +48,11 @@ var root = function (req, res) {
                 return;
             }
             question = req.body.question;
+            if (!question || !question.title || !question.body) {
+            	res.status(400);
+            	res.end();
+            	return;
+            }
             req.models.question.create([
                 {
                     title: question.title,
@@ -76,7 +81,7 @@ var root = function (req, res) {
             req.models.question.find().remove(function (err) {
                 if (err) {
                     console.error(err);
-                    res.status(400);
+                    res.status(500);
                     res.end();
                 }
                 res.status(204);
@@ -129,9 +134,21 @@ var question = function (req, res) {
                 var question = req.body.question;
                 if (err) {
                     console.error(err);
+                    res.status(404);
+                    res.end();
+                    return;
+                    
                 }
-                if (question.text) {
-                    questions.question = question.text;
+                if (!question) {
+                	res.status(400);
+                	res.end();
+                	return;
+                }
+                if (question.title) {
+                    questions.title = question.title;
+                }
+                if (question.body) {
+                    questions.body = question.body;
                 }
                 if (question.vote) {
                     questions.vote = question.vote;
@@ -140,7 +157,7 @@ var question = function (req, res) {
                 questions.save(function (err) {
                     if (err) {
                         console.error(err);
-                        res.status(400);
+                        res.status(500);
                         res.end();
                     }
                     res.status(200);
@@ -159,7 +176,7 @@ var question = function (req, res) {
                 }
                 question.remove(function (err) {
                     if (err) {
-                        res.status(400);
+                        res.status(500);
                         res.end();
                         return;
                     }
