@@ -16,9 +16,10 @@ var root = function (req, res) {
                     res.end();
                 }
                 if (err) {
+                    console.error(err);
                     res.status(500);
                     res.end();
-                    console.error(err);
+
                 }
                 if (req.header("if-modified-since")) {
                     since_date = new Date(req.header("if-modified-since"));
@@ -51,9 +52,10 @@ var root = function (req, res) {
                 var i,
                     item;
                 if (err) {
+                    console.error(err);
                     res.status(400);
                     res.end();
-                    console.error(err);
+
                 }
                 for (i = 0; i < items.length; i = i + 1) {
                     item = items[i];
@@ -67,6 +69,7 @@ var root = function (req, res) {
         'delete': function (req, res) {
             req.models.question_comment.find({ question_id: req.params.qid }).remove(function (err) {
                 if (err) {
+                	console.error(err);
                     res.status(400);
                     res.end();
                 }
@@ -90,9 +93,9 @@ var comment = function (req, res) {
             req.models.question_comment.get(req.params.cid, function (err, comment) {
                 var since_date;
                 if (err) {
+                	console.error(err);
                     res.status(404);
                     res.end();
-                    return;
                 }
                 if (req.header("if-modified-since")) {
                     since_date = new Date(req.header("if-modified-since"));
@@ -111,13 +114,16 @@ var comment = function (req, res) {
             res.setHeader('Content-Type', 'application/json');
             req.models.question_comment.get(req.params.cid, function (err, comments) {
                 var comment = req.body.comment;
+                if (err) {
+                	console.error(err);
+                }
                 if (comment.comment) {
                     comments.comment = comment.comment;
                 }
                 comments.last_modified = new Date();
                 comments.save(function (err) {
                     if (err) {
-                        console.log(err);
+                        console.error(err);
                         res.status(400);
                         res.end();
                     }
@@ -130,6 +136,7 @@ var comment = function (req, res) {
         'delete': function (req, res) {
             req.models.question_comment.find({id: req.params.cid, question_id: req.params.qid }).remove(function (err) {
                 if (err) {
+                	console.error(err);
                     res.status(400);
                     res.end();
                 }

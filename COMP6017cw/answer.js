@@ -11,15 +11,16 @@ var root = function (req, res) {
                 var a,
                     array = [],
                     since_date;
+                if (err) {
+					console.error(err);
+                    res.status(500);
+                    res.end();
+                }
                 if (answers.length === 0) {
                     res.status(404);
                     res.end();
                 }
-                if (err) {
-                    res.status(500);
-                    res.end();
-                    console.error(err);
-                }
+
                 if (req.header("if-modified-since")) {
                     since_date = new Date(req.header("if-modified-since"));
                     for (a = 0; a < answers.length; a = a + 1) {
@@ -53,7 +54,7 @@ var root = function (req, res) {
                 var i,
                     item;
                 if (err) {
-                    console.log(err);
+                    console.error(err);
                     res.status(400);
                     res.end();
                 }
@@ -69,6 +70,7 @@ var root = function (req, res) {
         'delete': function (req, res) {
             req.models.answer.find({ question_id: req.params.qid }).remove(function (err) {
                 if (err) {
+                	console.error(err);
                     res.status(400);
                     res.end();
                 }
@@ -92,9 +94,9 @@ var answer = function (req, res) {
             req.models.answer.find({ id : req.params.aid, question_id : req.params.qid }, function (err, answer) {
                 var since_date;
                 if (err) {
+                	console.error(err);
                     res.status(404);
                     res.end();
-                    return;
                 }
                 if (req.header("if-modified-since")) {
                     since_date = new Date(req.header("if-modified-since"));
@@ -113,6 +115,10 @@ var answer = function (req, res) {
             res.setHeader('Content-Type', 'application/json');
             req.models.answer.get(req.params.aid, function (err, answers) {
                 var answer = req.body.answer;
+                if (err) {
+                	console.error(err);
+                }
+                
                 if (answer.answer) {
                     answers.answer = answer.answer;
                 }
@@ -122,7 +128,7 @@ var answer = function (req, res) {
                 answers.last_modified = new Date();
                 answers.save(function (err) {
                     if (err) {
-                        console.log(err);
+                        console.error(err);
                         res.status(400);
                         res.end();
                     }
@@ -135,6 +141,7 @@ var answer = function (req, res) {
         'delete': function (req, res) {
             req.models.answer.find({ id: req.params.aid, question_id: req.params.qid }).remove(function (err) {
                 if (err) {
+                    console.error(err);
                     res.status(400);
                     res.end();
                 }

@@ -14,7 +14,7 @@ app.use(orm.express("sqlite://"+__dirname+"/../database/sqlite.db", {
     define: function (db, models, next) {
         db.driver.execQuery("PRAGMA foreign_keys = ON;", function (err, data) {
             if (err) {
-                console.log(err);
+                console.error(err);
             }
         });
         db.load(__dirname + "/models.js", function (err) {

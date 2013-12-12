@@ -48,7 +48,7 @@ var root = function (req, res) {
                 var i,
                     item;
                 if (err) {
-                    console.log(err);
+                    console.error(err);
                     res.status(400);
                     res.end();
                 }
@@ -64,7 +64,8 @@ var root = function (req, res) {
         'delete': function (req, res) {
             req.models.question.find().remove(function (err) {
                 if (err) {
-                    res.status(500);
+                	console.error(err);
+                    res.status(400);
                     res.end();
                 }
                 res.status(204);
@@ -87,9 +88,9 @@ var question = function (req, res) {
             req.models.question.get(req.params.qid, function (err, question) {
                 var since_date;
                 if (err) {
+                	console.error(err);
                     res.status(404);
                     res.end();
-                    return;
                 }
                 if (req.header("if-modified-since")) {
                     since_date = new Date(req.header("if-modified-since"));
@@ -108,6 +109,10 @@ var question = function (req, res) {
             res.setHeader('Content-Type', 'application/json');
             req.models.question.get(req.params.qid, function (err, questions) {
                 var question = req.body.question;
+                
+                if (err) {
+                	console.error(err);
+                }
                 if (question.text) {
                     questions.question = question.text;
                 }
@@ -117,7 +122,7 @@ var question = function (req, res) {
                 questions.last_modified = new Date();
                 questions.save(function (err) {
                     if (err) {
-                        console.log(err);
+                        console.error(err);
                         res.status(400);
                         res.end();
                     }
@@ -130,9 +135,9 @@ var question = function (req, res) {
         'delete': function (req, res) {
             req.models.question.get(req.params.qid, function (err, question) {
                 if (err) {
-                    res.status(500);
+                	console.error(err);
+                    res.status(400);
                     res.end();
-                    return;
                 }
                 question.remove(function (err) {
                     if (err) {
