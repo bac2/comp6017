@@ -11,10 +11,6 @@ var root = function (req, res) {
                 var c,
                     array = [],
                     since_date;
-                if (comments.length === 0) {
-                    res.status(404);
-                    res.end();
-                }
                 if (err) {
                     console.error(err);
                     res.status(500);
@@ -92,10 +88,11 @@ var comment = function (req, res) {
             res.setHeader('Content-Type', 'application/json');
             req.models.question_comment.get(req.params.cid, function (err, comment) {
                 var since_date;
-                if (err) {
+                if (err || !comment) {
                 	console.error(err);
                     res.status(404);
                     res.end();
+                    return;
                 }
                 if (req.header("if-modified-since")) {
                     since_date = new Date(req.header("if-modified-since"));

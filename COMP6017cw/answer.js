@@ -16,10 +16,6 @@ var root = function (req, res) {
                     res.status(500);
                     res.end();
                 }
-                if (answers.length === 0) {
-                    res.status(404);
-                    res.end();
-                }
 
                 if (req.header("if-modified-since")) {
                     since_date = new Date(req.header("if-modified-since"));
@@ -97,6 +93,12 @@ var answer = function (req, res) {
                 	console.error(err);
                     res.status(404);
                     res.end();
+                }
+				if (answer.length === 0) {
+                    res.status(404);
+                    res.end();
+                } else {
+                	answer = answer[0];
                 }
                 if (req.header("if-modified-since")) {
                     since_date = new Date(req.header("if-modified-since"));
