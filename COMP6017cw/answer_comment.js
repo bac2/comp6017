@@ -7,6 +7,13 @@ var root = function (req, res) {
 
         get: function (req, res) {
             res.setHeader('Content-Type', 'application/json');
+            req.models.answer.get(req.params.aid, function (err, question) {
+            	if (err) {
+            		res.status(404)
+            		res.end();
+            		return;
+            	}
+            });
             req.models.answer_comment.find({ answer_id : req.params.aid }, function (err, comments) {
                 var c,
                     array = [],

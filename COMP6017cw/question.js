@@ -102,6 +102,7 @@ var question = function (req, res) {
                     console.error(err);
                     res.status(404);
                     res.end();
+                    return;
                 }
                 if (req.header("if-modified-since")) {
                     since_date = new Date(req.header("if-modified-since"));
@@ -151,12 +152,13 @@ var question = function (req, res) {
         'delete': function (req, res) {
             req.models.question.get(req.params.qid, function (err, question) {
                 if (err) {
-                    console.error(err);
-                    res.status(400);
+                    console.error(err + " in question.delete");
+                    res.status(404);
                     res.end();
                 }
                 question.remove(function (err) {
                     if (err) {
+                    	
                         res.status(400);
                         res.end();
                     }

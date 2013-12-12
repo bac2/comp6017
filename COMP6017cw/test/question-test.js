@@ -220,6 +220,15 @@ suite.use("localhost", "1337")
 	.expect(200)
 	.expect("should have no body", function (err, res, body) {
 		assert.strictEqual(body, '');
-	});
+	})
+	.next();
+
+//Add then delete a question twice
+suite.post("/question", {'question':{ 'body':"Where am I?", 'title':'I am lost'}})
+	.expect(201)
+	.del("/question/2")
+	.expect(204)
+	.del("/question/2")
+	.expect(404)
 
 suite.export(module);

@@ -7,6 +7,13 @@ var root = function (req, res) {
 
         get: function (req, res) {
             res.setHeader('Content-Type', 'application/json');
+            req.models.question.get(req.params.qid, function (err, question) {
+            	if (err) {
+            		res.status(404)
+            		res.end();
+            		return;
+            	}
+            });
             req.models.answer.find({ question_id : req.params.qid }, [ "vote", "Z" ], function (err, answers) {
                 var a,
                     array = [],

@@ -7,6 +7,14 @@ var root = function (req, res) {
 
         get: function (req, res) {
             res.setHeader('Content-Type', 'application/json');
+            //Check the question exists
+            req.models.question.get(req.params.qid, function (err, question) {
+            	if (err) {
+            		res.status(404)
+            		res.end();
+            		return;
+            	}
+            });
             req.models.question_comment.find({ question_id : req.params.qid }, function (err, comments) {
                 var c,
                     array = [],
@@ -14,8 +22,9 @@ var root = function (req, res) {
                     reply = false;
                 if (err) {
                     console.error(err);
-                    res.status(500);
+                    res.status(404);
                     res.end();
+                    return;
                 }
                 if (req.header("if-modified-since")) {
                     since_date = new Date(req.header("if-modified-since"));
