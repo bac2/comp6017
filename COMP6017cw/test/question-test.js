@@ -226,8 +226,10 @@ suite.use("localhost", "1337")
 //Add then delete a question twice
 suite.post("/question", {'question':{ 'body':"Where am I?", 'title':'I am lost'}})
 	.expect(201)
+	.next()
 	.del("/question/2")
 	.expect(204)
+	.next()
 	.del("/question/2")
 	.expect(404)
 

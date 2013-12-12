@@ -152,15 +152,16 @@ var question = function (req, res) {
         'delete': function (req, res) {
             req.models.question.get(req.params.qid, function (err, question) {
                 if (err) {
-                    console.error(err + " in question.delete");
+                    console.error(err);
                     res.status(404);
                     res.end();
+                    return;
                 }
                 question.remove(function (err) {
                     if (err) {
-                    	
                         res.status(400);
                         res.end();
+                        return;
                     }
                     res.status(204);
                     res.end();
