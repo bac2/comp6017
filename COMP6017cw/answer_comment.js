@@ -11,10 +11,6 @@ var root = function (req, res) {
                 var c,
                     array = [],
                     since_date;
-                if (comments.length === 0) {
-                    res.status(404);
-                    res.end();
-                }
                 if (err) {
 					console.error(err);
                     res.status(500);
@@ -56,6 +52,8 @@ var root = function (req, res) {
                     res.status(400);
                     res.end();
                 }
+                if (!items) {
+                	
                 for (i = 0; i < items.length; i = i + 1) {
                     item = items[i];
                     res.status(201);
