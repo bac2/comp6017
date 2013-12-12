@@ -10,20 +10,23 @@ var root = function (req, res) {
             req.models.answer_comment.find({ answer_id : req.params.aid }, function (err, comments) {
                 var c,
                     array = [],
-                    since_date;
+                    since_date,
+                    reply = false;
                 if (err) {
 					console.error(err);
                     res.status(500);
                     res.end();
-
                 }
                 if (req.header("if-modified-since")) {
                     since_date = new Date(req.header("if-modified-since"));
                     for (c = 0; c < comments.length; c = c + 1) {
                         if (comments[c].last_modified < since_date) {
-                            res.status(304);
-                            res.end();
+							reply = true;
                         }
+                    }
+                    if (!reply) {
+                    	res.status(304);
+                    	res.end();
                     }
                 }
                 for (c = 0; c < comments.length; c = c + 1) {
@@ -52,8 +55,6 @@ var root = function (req, res) {
                     res.status(400);
                     res.end();
                 }
-                if (!items) {
-                	
                 for (i = 0; i < items.length; i = i + 1) {
                     item = items[i];
                     res.status(201);

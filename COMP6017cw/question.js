@@ -10,7 +10,8 @@ var root = function (req, res) {
             req.models.question.find([ "vote", "Z" ], function (err, questions) {
                 var q,
                     array = [],
-                    since_date;
+                    since_date,
+                    reply = false;
                 if (err) {
                     console.error(err);
                     res.status(500);
@@ -19,10 +20,13 @@ var root = function (req, res) {
                 if (req.header("if-modified-since")) {
                     since_date = new Date(req.header("if-modified-since"));
                     for (q = 0; q < questions.length; q = q + 1) {
-                        if (questions[q].last_modified < since_date) {
-                            res.status(304);
-                            res.end();
+                        if (questions[q].last_modified > since_date) {
+							reply = true;
                         }
+                    }
+                    if (!reply) {
+                    	res.status(304);
+                    	res.end();
                     }
                 }
                 for (q = 0; q < questions.length; q = q + 1) {
