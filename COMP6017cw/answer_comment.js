@@ -165,15 +165,24 @@ var comment = function (req, res) {
         },
 
         'delete': function (req, res) {
-            req.models.answer_comment.find({id: req.params.aid, answer_id: req.params.aid}).remove(function (err) {
-                if (err) {
-                    console.error(err);
-                    res.status(400);
-                    res.end();
-                }
-                res.status(204);
-                res.end();
-            });
+            req.models.answer_comment.get(req.params.cid, function (err, answer_comment) {
+				if (err) {
+	                console.error(err);
+	                res.status(404);
+	                res.end();
+	                return;
+	            }
+	            answer_comment.remove(function (err) {
+	                if (err) {
+	                    console.error(err);
+	                    res.status(500);
+	                    res.end();
+	                    return;
+	                }
+	                res.status(204);
+	                res.end();
+	            });
+          	});
         },
 
         head: function (req, res) {

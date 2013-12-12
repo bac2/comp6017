@@ -305,6 +305,9 @@ suite.post("/question", {'question':{ 'body':"Where am I?", 'title':'I am lost'}
 	.del("/question/2/comment/2")
 	.expect(204)
 	.next()
+	.del("/question/2/comment/2")
+	.expect(404)
+	.next()
 
 	//Put some A comments
 	.del("/question/2/answer/2/comment")
@@ -328,6 +331,17 @@ suite.post("/question", {'question':{ 'body':"Where am I?", 'title':'I am lost'}
 	.next()
 	.del("/question/2/answer/2/comment/2")
 	.expect(204)
+	.next()
+	.del("/question/2/answer/2/comment/2")
+	.expect(404)
+	.next()
+
+	//Delete the answer...
+	.del("/question/2/answer/2")
+	.expect(204)
+	.next()
+	.del("/question/2/answer/2")
+	.expect(404)
 	.next()
 
 	//Put some posts, post some puts

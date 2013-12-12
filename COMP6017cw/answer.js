@@ -163,15 +163,24 @@ var answer = function (req, res) {
         },
 
         'delete': function (req, res) {
-            req.models.answer.find({ id: req.params.aid, question_id: req.params.qid }).remove(function (err) {
-                if (err) {
-                    console.error(err);
-                    res.status(400);
-                    res.end();
-                }
-                res.status(204);
-                res.end();
-            });
+            req.models.answer.get(req.params.aid, function(err, answer) {
+	            if (err) {
+	                console.error(err);
+	                res.status(404);
+	                res.end();
+	                return;
+	            }
+	            answer.remove(function (err) {
+	                if (err) {
+	                    console.error(err);
+	                    res.status(500);
+	                    res.end();
+	                    return;
+	                }
+	                res.status(204);
+	                res.end();
+	            });
+           	});
         },
 
         head: function (req, res) {
