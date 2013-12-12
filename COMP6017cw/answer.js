@@ -9,6 +9,7 @@ var root = function (req, res) {
             res.setHeader('Content-Type', 'application/json');
             req.models.question.get(req.params.qid, function (err, question) {
             	if (err) {
+            		//Question doesn't exist
             		res.status(404)
             		res.end();
             		return;
@@ -24,6 +25,7 @@ var root = function (req, res) {
                     res.status(500);
                     res.end();
                 }
+                //Check for modifications
                 if (req.header("if-modified-since")) {
                     since_date = new Date(req.header("if-modified-since"));
                     for (a = 0; a < answers.length; a = a + 1) {
@@ -36,7 +38,7 @@ var root = function (req, res) {
                         res.end();
                     }
                 }
-
+				//Build the output
                 for (a = 0; a < answers.length; a = a + 1) {
                     answers[a]._links = {question: "/question/" + answers[a].question_id + "/", comment: "/question/" + answers[a].question_id + "/answer/" + answers[a].id + "/comment"};
                     array.push(answers[a]);
@@ -51,6 +53,7 @@ var root = function (req, res) {
             var content_type = req.header('content-type'),
                 answer;
             if (content_type.toLowerCase() !== 'application/json') {
+            	//Only accept json
                 res.status(415);
                 res.end();
                 return;
@@ -71,6 +74,7 @@ var root = function (req, res) {
                     res.status(400);
                     res.end();
                 }
+                //Set the location header
                 for (i = 0; i < items.length; i = i + 1) {
                     item = items[i];
                     res.status(201);
@@ -117,6 +121,7 @@ var answer = function (req, res) {
                 } else {
                     answer = answer[0];
                 }
+                //Check for modifications
                 if (req.header("if-modified-since")) {
                     since_date = new Date(req.header("if-modified-since"));
                     if (answer.last_modified < since_date) {
@@ -134,6 +139,7 @@ var answer = function (req, res) {
             res.setHeader('Content-Type', 'application/json');
             var content_type = req.header('content-type');
             if (content_type.toLowerCase() !== 'application/json') {
+            	//Only accept json
                 res.status(415);
                 res.end();
                 return;
@@ -143,6 +149,7 @@ var answer = function (req, res) {
                 if (err) {
                     console.error(err);
                 }
+                //Check for correct inputs
                 if (answer.answer) {
                     answers.answer = answer.answer;
                 }
@@ -165,6 +172,7 @@ var answer = function (req, res) {
         'delete': function (req, res) {
             req.models.answer.get(req.params.aid, function(err, answer) {
 	            if (err) {
+	            	//Answer didn't exist
 	                console.error(err);
 	                res.status(404);
 	                res.end();
@@ -172,6 +180,7 @@ var answer = function (req, res) {
 	            }
 	            answer.remove(function (err) {
 	                if (err) {
+	                	//Deletion error
 	                    console.error(err);
 	                    res.status(500);
 	                    res.end();

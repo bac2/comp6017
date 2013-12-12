@@ -8,6 +8,7 @@ var root = function (req, res) {
         get: function (req, res) {
             res.setHeader('Content-Type', 'application/json');
             req.models.answer.get(req.params.aid, function (err, question) {
+            	//Answer doesn't exist
             	if (err) {
             		res.status(404)
             		res.end();
@@ -20,11 +21,13 @@ var root = function (req, res) {
                     since_date,
                     reply = false;
                 if (err) {
+                	//Comments doesn't exist
                     console.error(err);
-                    res.status(404);
+                    res.status(500);
                     res.end();
                     return;
                 }
+                //Check for modification
                 if (req.header("if-modified-since")) {
                     since_date = new Date(req.header("if-modified-since"));
                     for (c = 0; c < comments.length; c = c + 1) {
@@ -37,6 +40,7 @@ var root = function (req, res) {
                         res.end();
                     }
                 }
+                //Build the output
                 for (c = 0; c < comments.length; c = c + 1) {
                     comments[c]._links = {answer: "/question/" + req.params.qid + "/answer/" + req.params.aid + "/"};
                     array.push(comments[c]);
@@ -51,12 +55,14 @@ var root = function (req, res) {
             var content_type = req.header('content-type'),
                 comment;
             if (content_type.toLowerCase() !== 'application/json') {
+            	//Only accept json
                 res.status(415);
                 res.end();
                 return;
             }
             comment = req.body.comment;
             if (!comment || !comment.comment) {
+            	//Check we have a valid json object
             	res.status(400);
             	res.end();
             	return;
@@ -75,6 +81,7 @@ var root = function (req, res) {
                     res.status(400);
                     res.end();
                 }
+                //Create the location header
                 for (i = 0; i < items.length; i = i + 1) {
                     item = items[i];
                     res.status(201);
@@ -111,11 +118,13 @@ var comment = function (req, res) {
             req.models.answer_comment.get(req.params.cid, function (err, comment) {
                 var since_date;
                 if (err) {
+                	//The comment doesn't exist
                     console.error(err);
                     res.status(404);
                     res.end();
                     return;
                 }
+                //Check for modification
                 if (req.header("if-modified-since")) {
                     since_date = new Date(req.header("if-modified-since"));
                     if (comment.last_modified < since_date) {
@@ -133,14 +142,15 @@ var comment = function (req, res) {
             res.setHeader('Content-Type', 'application/json');
             var content_type = req.header('content-type');
             if (content_type.toLowerCase() !== 'application/json') {
+            	//Only accept json
                 res.status(415);
                 res.end();
                 return;
             }
             req.models.answer_comment.get(req.params.cid, function (err, comments) {
                 var comment = req.body.comment;
-                //Check for malformed argument
                 if (!comment || !comment.comment) {
+                    //Check for malformed argument
                 	res.status(400);
                 	res.end();
                 	return;
@@ -148,10 +158,12 @@ var comment = function (req, res) {
                 if (err) {
                     console.error(err);
                 }
+                //Update the db object
                 if (comment.comment) {
                     comments.comment = comment.comment;
                 }
                 comments.last_modified = new Date();
+                //Save the changes
                 comments.save(function (err) {
                     if (err) {
                         console.error(err);
@@ -167,6 +179,7 @@ var comment = function (req, res) {
         'delete': function (req, res) {
             req.models.answer_comment.get(req.params.cid, function (err, answer_comment) {
 				if (err) {
+					//404 on repeated deletes
 	                console.error(err);
 	                res.status(404);
 	                res.end();
@@ -174,6 +187,7 @@ var comment = function (req, res) {
 	            }
 	            answer_comment.remove(function (err) {
 	                if (err) {
+	                	//Deletion error
 	                    console.error(err);
 	                    res.status(500);
 	                    res.end();

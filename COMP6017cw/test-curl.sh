@@ -10,7 +10,7 @@ curl -D- -X DELETE http://localhost:1337/question/  --max-time 2
 echo "204 No Content expected"
 echo ""
 echo "#############################"
-echo "### ADD ONE QUESTION 	    ###"
+echo "### ADD ONE QUESTION      ###"
 echo "#############################"
 # Add a new question
 echo "Add a new question:"
@@ -19,7 +19,7 @@ echo "Expected Location header and 201 created"
 echo ""
 
 echo "#############################"
-echo "### GET SOME EMPTY STUFF  ###"
+echo "### GET SOME EMPTY URLS   ###"
 echo "#############################"
 # Get a specific question
 echo "Get a specific question:"
@@ -54,7 +54,7 @@ echo ""
 # Get all comments to an answer
 echo "Get all comments to an answer:"
 curl -D- -X GET http://localhost:1337/question/1/answer/1/comment --max-time 1
-echo "[] expected"
+echo "404 expected"
 echo ""
 
 # Get a specific comment on an answer
@@ -64,7 +64,7 @@ echo "404 expected"
 echo ""
 
 echo "#############################"
-echo "### ADD SOME STUFF		###"
+echo "### ADD SOME CONTENT	###"
 echo "#############################"
 
 # Add a new answer to a question
@@ -86,7 +86,7 @@ echo "Expected Location header and 201 created"
 echo ""
 
 echo "#############################"
-echo "### GET SOME FULL STUFF	###"
+echo "### GET SOME FULL URLS	###"
 echo "#############################"
 
 # Get a specific question
@@ -131,7 +131,7 @@ echo "Single object (no array) expected"
 echo ""
 
 echo "#############################"
-echo "### PUT SOME STUFF        ###"
+echo "### PUT SOME CONTENT      ###"
 echo "#############################"
 
 echo "PUT an update to a question"
@@ -155,7 +155,7 @@ echo "Expected votes of 3000"
 echo ""
 
 echo "#############################"
-echo "### CHECK FOR 304's       ###"
+echo "### CHECK FOR 304s       ###"
 echo "#############################"
 
 echo "Get question 1 if modified since 2012"

@@ -10,6 +10,7 @@ var root = function (req, res) {
             //Check the question exists
             req.models.question.get(req.params.qid, function (err, question) {
             	if (err) {
+            		//Question doesn't exist
             		res.status(404)
             		res.end();
             		return;
@@ -21,11 +22,13 @@ var root = function (req, res) {
                     since_date,
                     reply = false;
                 if (err) {
+                	//Not found
                     console.error(err);
                     res.status(404);
                     res.end();
                     return;
                 }
+                //Check for modifications
                 if (req.header("if-modified-since")) {
                     since_date = new Date(req.header("if-modified-since"));
                     for (c = 0; c < comments.length; c = c + 1) {
@@ -38,6 +41,7 @@ var root = function (req, res) {
                         res.end();
                     }
                 }
+                //Build the output
                 for (c = 0; c < comments.length; c = c + 1) {
                     comments[c]._links = {question: "/question/" + req.params.qid + "/"};
                     array.push(comments[c]);
@@ -52,6 +56,7 @@ var root = function (req, res) {
             var content_type = req.header('content-type'),
                 comment;
             if (content_type.toLowerCase() !== 'application/json') {
+            	//Only accept json
                 res.status(415);
                 res.end();
                 return;
@@ -77,6 +82,7 @@ var root = function (req, res) {
                     res.status(400);
                     res.end();
                 }
+                //Create the Location header
                 for (i = 0; i < items.length; i = i + 1) {
                     item = items[i];
                     res.status(201);
@@ -113,11 +119,13 @@ var comment = function (req, res) {
             req.models.question_comment.get(req.params.cid, function (err, comment) {
                 var since_date;
                 if (err || !comment) {
+                	//Comment doesn't exist
                     console.error(err);
                     res.status(404);
                     res.end();
                     return;
                 }
+                //Check for modifcations
                 if (req.header("if-modified-since")) {
                     since_date = new Date(req.header("if-modified-since"));
                     if (comment.last_modified < since_date) {
@@ -135,6 +143,7 @@ var comment = function (req, res) {
             res.setHeader('Content-Type', 'application/json');
             var content_type = req.header('content-type');
             if (content_type.toLowerCase() !== 'application/json') {
+            	//Only accept json
                 res.status(415);
                 res.end();
                 return;

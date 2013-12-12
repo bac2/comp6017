@@ -17,6 +17,7 @@ var root = function (req, res) {
                     res.status(500);
                     res.end();
                 }
+                //Check for modifications
                 if (req.header("if-modified-since")) {
                     since_date = new Date(req.header("if-modified-since"));
                     for (q = 0; q < questions.length; q = q + 1) {
@@ -29,6 +30,7 @@ var root = function (req, res) {
                         res.end();
                     }
                 }
+                //Build the output
                 for (q = 0; q < questions.length; q = q + 1) {
                     questions[q]._links = {question: "/question/" + questions[q].id + "/", answer: "/question/" + questions[q].id + "/answer/", comment: "/question/" + questions[q].id + "/comment/"};
                     array.push(questions[q]);
@@ -43,11 +45,13 @@ var root = function (req, res) {
             var content_type = req.header('content-type'),
                 question;
             if (content_type.toLowerCase() !== 'application/json') {
+            	//Only accept json
                 res.status(415);
                 res.end();
                 return;
             }
             question = req.body.question;
+            //Check for malformed input
             if (!question || !question.title || !question.body) {
             	res.status(400);
             	res.end();
@@ -104,6 +108,7 @@ var question = function (req, res) {
             req.models.question.get(req.params.qid, function (err, question) {
                 var since_date;
                 if (err) {
+                	//Question doesn't exist
                     console.error(err);
                     res.status(404);
                     res.end();
@@ -126,6 +131,7 @@ var question = function (req, res) {
             res.setHeader('Content-Type', 'application/json');
             var content_type = req.header('content-type');
             if (content_type.toLowerCase() !== 'application/json') {
+            	//Only accept json
                 res.status(415);
                 res.end();
                 return;
@@ -139,6 +145,7 @@ var question = function (req, res) {
                     return;
                     
                 }
+                //Check for malformed input
                 if (!question) {
                 	res.status(400);
                 	res.end();

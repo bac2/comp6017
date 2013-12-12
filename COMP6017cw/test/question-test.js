@@ -8,7 +8,7 @@ suite.discuss("questions");
 suite.use("localhost", "1337")
 	.setHeader("Content-Type", "application/json");
 
-	suite.get("/")
+suite.get("/")
 	.expect(200)
 	.expect("should respond with link to /questions", function (err, res, body) {
 		var result = JSON.parse(body);
