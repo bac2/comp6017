@@ -2,22 +2,22 @@
 
 var express = require('express'),
     orm = require('orm'),
-    root = require("./root.js"),
-    question = require("./question.js"),
-    answer = require("./answer.js"),
-    question_comment = require("./question_comment.js"),
-    answer_comment = require("./answer_comment.js");
+    root = require(__dirname + "/root.js"),
+    question = require(__dirname + "/question.js"),
+    answer = require(__dirname + "/answer.js"),
+    question_comment = require(__dirname + "/question_comment.js"),
+    answer_comment = require(__dirname + "/answer_comment.js");
 
 var app = express();
 
-app.use(orm.express("sqlite://../database/sqlite.db", {
+app.use(orm.express("sqlite://"+__dirname+"/../database/sqlite.db", {
     define: function (db, models, next) {
         db.driver.execQuery("PRAGMA foreign_keys = ON;", function (err, data) {
             if (err) {
                 console.log(err);
             }
         });
-        db.load("./models.js", function (err) {
+        db.load(__dirname + "/models.js", function (err) {
             if (err) {
                 console.error(err);
             }
