@@ -9,12 +9,12 @@ var root = function (req, res) {
             res.setHeader('Content-Type', 'application/json');
             //Check the question exists
             req.models.question.get(req.params.qid, function (err, question) {
-            	if (err) {
-            		//Question doesn't exist
-            		res.status(404)
-            		res.end();
-            		return;
-            	}
+                if (err) {
+                    //Question doesn't exist
+                    res.status(404);
+                    res.end();
+                    return;
+                }
             });
             req.models.question_comment.find({ question_id : req.params.qid }, function (err, comments) {
                 var c,
@@ -22,7 +22,7 @@ var root = function (req, res) {
                     since_date,
                     reply = false;
                 if (err) {
-                	//Not found
+                        //Not found
                     console.error(err);
                     res.status(404);
                     res.end();
@@ -56,7 +56,7 @@ var root = function (req, res) {
             var content_type = req.header('content-type'),
                 comment;
             if (content_type.toLowerCase() !== 'application/json') {
-            	//Only accept json
+                //Only accept json
                 res.status(415);
                 res.end();
                 return;
@@ -119,7 +119,7 @@ var comment = function (req, res) {
             req.models.question_comment.get(req.params.cid, function (err, comment) {
                 var since_date;
                 if (err || !comment) {
-                	//Comment doesn't exist
+                        //Comment doesn't exist
                     console.error(err);
                     res.status(404);
                     res.end();
@@ -143,7 +143,7 @@ var comment = function (req, res) {
             res.setHeader('Content-Type', 'application/json');
             var content_type = req.header('content-type');
             if (content_type.toLowerCase() !== 'application/json') {
-            	//Only accept json
+                //Only accept json
                 res.status(415);
                 res.end();
                 return;

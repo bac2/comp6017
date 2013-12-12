@@ -8,12 +8,12 @@ var root = function (req, res) {
         get: function (req, res) {
             res.setHeader('Content-Type', 'application/json');
             req.models.answer.get(req.params.aid, function (err, question) {
-            	//Answer doesn't exist
-            	if (err) {
-            		res.status(404)
-            		res.end();
-            		return;
-            	}
+                //Answer doesn't exist
+                if (err) {
+                    res.status(404);
+                    res.end();
+                    return;
+                }
             });
             req.models.answer_comment.find({ answer_id : req.params.aid }, function (err, comments) {
                 var c,
@@ -21,7 +21,7 @@ var root = function (req, res) {
                     since_date,
                     reply = false;
                 if (err) {
-                	//Comments doesn't exist
+                        //Comments doesn't exist
                     console.error(err);
                     res.status(500);
                     res.end();
@@ -55,17 +55,17 @@ var root = function (req, res) {
             var content_type = req.header('content-type'),
                 comment;
             if (content_type.toLowerCase() !== 'application/json') {
-            	//Only accept json
+                //Only accept json
                 res.status(415);
                 res.end();
                 return;
             }
             comment = req.body.comment;
             if (!comment || !comment.comment) {
-            	//Check we have a valid json object
-            	res.status(400);
-            	res.end();
-            	return;
+                //Check we have a valid json object
+                res.status(400);
+                res.end();
+                return;
             }
             req.models.answer_comment.create([
                 {
@@ -118,7 +118,7 @@ var comment = function (req, res) {
             req.models.answer_comment.get(req.params.cid, function (err, comment) {
                 var since_date;
                 if (err) {
-                	//The comment doesn't exist
+                        //The comment doesn't exist
                     console.error(err);
                     res.status(404);
                     res.end();
@@ -142,7 +142,7 @@ var comment = function (req, res) {
             res.setHeader('Content-Type', 'application/json');
             var content_type = req.header('content-type');
             if (content_type.toLowerCase() !== 'application/json') {
-            	//Only accept json
+                //Only accept json
                 res.status(415);
                 res.end();
                 return;
@@ -178,7 +178,7 @@ var comment = function (req, res) {
 
         'delete': function (req, res) {
             req.models.answer_comment.get(req.params.cid, function (err, answer_comment) {
-		//404 on repeated deletes
+                //404 on repeated deletes
                 if (err) {
                     console.error(err);
                     res.status(404);
@@ -187,7 +187,7 @@ var comment = function (req, res) {
                 }
                 answer_comment.remove(function (err) {
                     if (err) {
-			//Deletion error
+                        //Deletion error
                         console.error(err);
                         res.status(500);
                         res.end();

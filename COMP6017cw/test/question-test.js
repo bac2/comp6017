@@ -1,3 +1,4 @@
+/*jslint devel: true, node: true, nomen: true, unparam: true, sloppy: true */
 var APIeasy = require("api-easy");
 var assert = require("assert");
 

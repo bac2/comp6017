@@ -8,12 +8,12 @@ var root = function (req, res) {
         get: function (req, res) {
             res.setHeader('Content-Type', 'application/json');
             req.models.question.get(req.params.qid, function (err, question) {
-            	if (err) {
-            		//Question doesn't exist
-            		res.status(404)
-            		res.end();
-            		return;
-            	}
+                if (err) {
+                    //Question doesn't exist
+                    res.status(404);
+                    res.end();
+                    return;
+                }
             });
             req.models.answer.find({ question_id : req.params.qid }, [ "vote", "Z" ], function (err, answers) {
                 var a,
@@ -38,7 +38,7 @@ var root = function (req, res) {
                         res.end();
                     }
                 }
-				//Build the output
+                                //Build the output
                 for (a = 0; a < answers.length; a = a + 1) {
                     answers[a]._links = {question: "/question/" + answers[a].question_id + "/", comment: "/question/" + answers[a].question_id + "/answer/" + answers[a].id + "/comment"};
                     array.push(answers[a]);
@@ -53,7 +53,7 @@ var root = function (req, res) {
             var content_type = req.header('content-type'),
                 answer;
             if (content_type.toLowerCase() !== 'application/json') {
-            	//Only accept json
+                //Only accept json
                 res.status(415);
                 res.end();
                 return;
@@ -139,7 +139,7 @@ var answer = function (req, res) {
             res.setHeader('Content-Type', 'application/json');
             var content_type = req.header('content-type');
             if (content_type.toLowerCase() !== 'application/json') {
-            	//Only accept json
+                //Only accept json
                 res.status(415);
                 res.end();
                 return;
@@ -172,7 +172,7 @@ var answer = function (req, res) {
         'delete': function (req, res) {
             req.models.answer.get(req.params.aid, function (err, answer) {
                 if (err) {
-			//Answer didn't exist
+                        //Answer didn't exist
                     console.error(err);
                     res.status(404);
                     res.end();
@@ -180,7 +180,7 @@ var answer = function (req, res) {
                 }
                 answer.remove(function (err) {
                     if (err) {
-	               	//Deletion error
+                        //Deletion error
                         console.error(err);
                         res.status(500);
                         res.end();

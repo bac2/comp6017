@@ -45,7 +45,7 @@ var root = function (req, res) {
             var content_type = req.header('content-type'),
                 question;
             if (content_type.toLowerCase() !== 'application/json') {
-            	//Only accept json
+                //Only accept json
                 res.status(415);
                 res.end();
                 return;
@@ -108,7 +108,7 @@ var question = function (req, res) {
             req.models.question.get(req.params.qid, function (err, question) {
                 var since_date;
                 if (err) {
-                	//Question doesn't exist
+                        //Question doesn't exist
                     console.error(err);
                     res.status(404);
                     res.end();
@@ -131,7 +131,7 @@ var question = function (req, res) {
             res.setHeader('Content-Type', 'application/json');
             var content_type = req.header('content-type');
             if (content_type.toLowerCase() !== 'application/json') {
-            	//Only accept json
+                //Only accept json
                 res.status(415);
                 res.end();
                 return;
