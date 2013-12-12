@@ -1,10 +1,6 @@
 /*jslint devel: true, node: true, nomen: true, unparam: true, sloppy: true */
 
-<<<<<<< Updated upstream
-var utils = require("./utils.js");
-=======
 var	utils = require(__dirname + "/utils.js");
->>>>>>> Stashed changes
 
 var root = function (req, res) {
     utils.restful(req, res, {
