@@ -131,6 +131,30 @@ echo "Single object (no array) expected"
 echo ""
 
 echo "#############################"
+echo "### PUT SOME STUFF        ###"
+echo "#############################"
+
+echo "PUT an update to a question"
+curl -D- --header "Content-Type: application/json" -X PUT http://localhost:1337/question/1/ --data '{"question":{"body":"I really like cats"}}' --max-time 1
+echo "Expected 200 OK"
+echo ""
+
+echo "GET the update to a question"
+curl -D- -X GET http://localhost:1337/question/1  --max-time 1
+echo "Expected body of \"I really like cats\""
+echo ""
+
+echo "PUT an update to an answer"
+curl -D- --header "Content-Type: application/json" -X PUT http://localhost:1337/question/1/answer/1 --data '{"answer":{"vote":"3000"}}' --max-time 1
+echo "Expected 200 OK"
+echo ""
+
+echo "GET the update to the answer"
+curl -D- -X GET http://localhost:1337/question/1/answer/1  --max-time 1
+echo "Expected votes of 3000"
+echo ""
+
+echo "#############################"
 echo "### CHECK FOR 304's       ###"
 echo "#############################"
 

@@ -349,6 +349,10 @@ suite.post("/question", {'question':{ 'body':"Where am I?", 'title':'I am lost'}
 	.expect(405)
 	.post("/question/1", {'question':{'title':"How old am I?", 'body':"I don't know how to know"}})	
 	.expect(405)
+	.put("/question/1/answer", {'answer':{'answer':"Start counting"}})
+	.expect(405)
+	.post("/question/1/answer/1", {'answer':{'answer':'Start counting'}})
+	.expect(405)
 
 
 suite.export(module);
