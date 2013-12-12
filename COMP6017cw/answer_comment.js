@@ -151,9 +151,9 @@ var comment = function (req, res) {
                 var comment = req.body.comment;
                 if (!comment || !comment.comment) {
                     //Check for malformed argument
-                	res.status(400);
-                	res.end();
-                	return;
+                    res.status(400);
+                    res.end();
+                    return;
                 }
                 if (err) {
                     console.error(err);
@@ -178,25 +178,25 @@ var comment = function (req, res) {
 
         'delete': function (req, res) {
             req.models.answer_comment.get(req.params.cid, function (err, answer_comment) {
-				if (err) {
-					//404 on repeated deletes
-	                console.error(err);
-	                res.status(404);
-	                res.end();
-	                return;
-	            }
-	            answer_comment.remove(function (err) {
-	                if (err) {
-	                	//Deletion error
-	                    console.error(err);
-	                    res.status(500);
-	                    res.end();
-	                    return;
-	                }
-	                res.status(204);
-	                res.end();
-	            });
-          	});
+		//404 on repeated deletes
+                if (err) {
+                    console.error(err);
+                    res.status(404);
+                    res.end();
+                    return;
+                }
+                answer_comment.remove(function (err) {
+                    if (err) {
+			//Deletion error
+                        console.error(err);
+                        res.status(500);
+                        res.end();
+                        return;
+                    }
+                    res.status(204);
+                    res.end();
+                });
+            });
         },
 
         head: function (req, res) {

@@ -170,26 +170,26 @@ var answer = function (req, res) {
         },
 
         'delete': function (req, res) {
-            req.models.answer.get(req.params.aid, function(err, answer) {
-	            if (err) {
-	            	//Answer didn't exist
-	                console.error(err);
-	                res.status(404);
-	                res.end();
-	                return;
-	            }
-	            answer.remove(function (err) {
-	                if (err) {
-	                	//Deletion error
-	                    console.error(err);
-	                    res.status(500);
-	                    res.end();
-	                    return;
-	                }
-	                res.status(204);
-	                res.end();
-	            });
-           	});
+            req.models.answer.get(req.params.aid, function (err, answer) {
+                if (err) {
+			//Answer didn't exist
+                    console.error(err);
+                    res.status(404);
+                    res.end();
+                    return;
+                }
+                answer.remove(function (err) {
+                    if (err) {
+	               	//Deletion error
+                        console.error(err);
+                        res.status(500);
+                        res.end();
+                        return;
+                    }
+                    res.status(204);
+                    res.end();
+                });
+            });
         },
 
         head: function (req, res) {
