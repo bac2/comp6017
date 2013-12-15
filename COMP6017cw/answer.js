@@ -1,5 +1,4 @@
-/*jslint node: true */
-"use strict";
+/*jslint devel: true, node: true, nomen: true, unparam: true, sloppy: true */
 
 var	utils = require("./utils.js");
 
@@ -9,15 +8,16 @@ var root = function (req, res) {
         get: function (req, res) {
             res.setHeader('Content-Type', 'application/json');
             req.models.answer.find({ question_id : req.params.qid }, [ "vote", "Z" ], function (err, answers) {
-                //SQL: SELECT a.id, a.question_id, a.answer, a.vote FROM Answer a WHERE a.question_id = qid
                 var a,
-                    array = [];
+                    array = [],
+                    since_date;
                 if (answers.length == 0) {
                 	res.status(404);
                 	res.end();
                 }
                 if (err) {
                 	res.status(500);
+                	res.end();
                     console.error(err);
                 }
                 if (req.header("if-modified-since")) {s
@@ -67,7 +67,11 @@ var root = function (req, res) {
         
         'delete': function (req, res) {
         	
-        }
+        },
+        
+    	head: function (req, res) {
+    		this.handlers['get'](req, res);
+    	}
     
     });
 };
@@ -77,34 +81,43 @@ var answer = function (req, res) {
     	
     	get: function (req, res) {
 		    res.setHeader('Content-Type', 'application/json');
-		    req.models.answer.find({ id : req.params.aid, question_id : req.params.qid }, function (err, answers) {
-		        //SQL: SELECT a.id, a.question_id, a.answer, a.vote FROM Answer a WHERE a.question_id = qid AND a.id = aid
-		        var a;
-		        if (err || typeof answers === 'undefined') {
-		            console.error(err);
+		    req.models.answer.find({ id : req.params.aid, question_id : req.params.qid }, function (err, answer) {
+		    	var since_date;
+		        if (err) {
+		        	res.status(404);
+		        	res.end();
+		        	return;
 		        }
-		        if (req.header("if-modified-since")) {s
+		        if (req.header("if-modified-since")) {
     	        	since_date = new Date(req.header("if-modified-since"));
 	        		if (answer.last_modified < since_date) {
 	        			res.status(304);
 	        			res.end();
 	        		}
     	        }
-		        for (a = 0; a < answers.length; a = a + 1) {
-		            answers[a]['_links'] = {question: "/question/" + answers[a].question_id + "/", comment: "/question/" + answers[a].question_id + "/answer/" + answers[a].id + "/comment"};
-		            res.write(JSON.stringify(answers[a]) + "\n");
-		        }
+		        answer['_links'] = {question: "/question/" + answer.question_id + "/", comment: "/question/" + answer.question_id + "/answer/" + answer.id + "/comment/"};
+	            res.write(JSON.stringify(answer) + "\n");
 		        res.end();
 		    });
     	},
     	
         put: function (req, res) {
-        	
         },
         
         'delete': function (req, res) {
-        	
-        }
+        	req.models.answer.find({ id: req.params.aid, question_id: req.params.qid }).remove(function (err) {
+        		if (err) {
+        			res.status(400);
+        			res.end();
+        		}
+        		res.status(204);
+        		res.end();
+        	});        		
+        },
+        
+    	head: function (req, res) {
+    		this.handlers['get'](req, res);
+    	}
     	
     });
 };

@@ -1,16 +1,16 @@
-/*jslint node: true */
-"use strict";
+/*jslint devel: true, node: true, nomen: true, unparam: true, sloppy: true */
 
 var	utils = require("./utils.js");
 
 var root = function (req, res) {
     utils.restful(req, res, {
-    
+    	
     	get: function (req, res) {
     	    res.setHeader('Content-Type', 'application/json');
     	    req.models.question_comment.find({ question_id : req.params.qid }, function (err, comments) {
     	        var c,
-    	            array = [];
+    	            array = [],
+    	            since_date;
 				if (comments.length == 0) {
                 	res.status(404);
                 	res.end();
@@ -20,12 +20,19 @@ var root = function (req, res) {
     	        	res.end();
     	            console.error(err);
     	        }
-    	        
+    	        if (req.header("if-modified-since")) {
+    	        	since_date = new Date(req.header("if-modified-since"));
+    	        	for (c = 0; c < comments.length; c = c + 1) {
+    	        		if (comments[c].last_modified < since_date) {
+    	        			res.status(304);
+    	        			res.end();
+    	        		}
+    	        	}
+    	        }    	        
     	        for (c = 0; c < comments.length; c = c + 1) {
     	            comments[c]['_links'] = {question: "/question/" + req.params.qid + "/"};
     	            array.push(comments[c]);
     	        }
-    	        res.status(200);
     	        res.write(JSON.stringify(array) + "\n");
     	        res.end();
     	    });
@@ -58,25 +65,35 @@ var root = function (req, res) {
         },
         
         'delete': function (req, res) {
-        }
+        },
+        
+    	head: function (req, res) {
+    		this.handlers['get'](req, res);
+    	}
 
     });
 };
 
 var comment = function (req, res) {
     utils.restful(req, res, {
-    
+    	
     	get: function (req, res) {
     	    res.setHeader('Content-Type', 'application/json');
-    	    req.models.question_comment.get(req.params.cid, function (err, comments) {
+    	    req.models.question_comment.get(req.params.cid, function (err, comment) {
     	        if (err) {
-    	        	res.status(500);
+    	        	res.status(404);
     	        	res.end();
-    	            console.error(err);
-    	        }    	        
+    	            return;
+    	        }
+    	        if (req.header("if-modified-since")) {
+    	        	since_date = new Date(req.header("if-modified-since"));
+    	        	if (comment.last_modified < since_date) {
+    	        		res.status(304);
+    	        		res.end();
+    	        	}
+    	        }
 	            comment['_links'] = {question: "/question/" + req.params.qid + "/"};
-    	        res.status(200);
-    	        res.write(JSON.stringify(comments) + "\n");
+    	        res.write(JSON.stringify(comment) + "\n");
     	        res.end();
     	    });
         },
@@ -87,7 +104,11 @@ var comment = function (req, res) {
         
 		'delete': function (req, res) {
 		    		
-		}
+		},
+		
+    	head: function (req, res) {
+    		this.handlers['get'](req, res);
+    	}
         
     });
 };

@@ -1,5 +1,4 @@
-/*jslint node: true */
-"use strict";
+/*jslint devel: true, node: true, nomen: true, unparam: true, sloppy: true */
 
 var	utils = require("./utils.js");
 
@@ -16,7 +15,11 @@ var root = function (req, res) {
         
         'delete': function (req, res) {
         	
-        }
+        },
+        
+    	head: function (req, res) {
+    		this.handlers['get'](req, res);
+    	}
 
     });
 };
@@ -34,7 +37,11 @@ var comment = function (req, res) {
         
 		'delete': function (req, res) {
 		    		
-		}
+		},
+		
+    	head: function (req, res) {
+    		this.handlers['get'](req, res);
+    	}
         
     });
 };

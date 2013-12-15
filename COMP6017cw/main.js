@@ -1,5 +1,4 @@
-/*jslint node: true */
-"use strict";
+/*jslint devel: true, node: true, nomen: true, unparam: true, sloppy: true */
 
 var express = require('express'),
     orm = require('orm'),
