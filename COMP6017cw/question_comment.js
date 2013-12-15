@@ -106,8 +106,24 @@ var comment = function (req, res) {
     	    });
         },
         
-    	put: function (req, res) {
-    		
+        put: function (req, res) {
+        	res.setHeader('Content-Type', 'application/json');
+        	req.models.question_comment.get(req.params.cid, function(err, comments) {
+        		var comment = req.body['comment'];
+        		if (comment.comment) {
+        			comments.comment = comment.comment;
+        		}
+        		comments.last_modified = new Date();
+        		comments.save(function (err) {
+        			if (err) {
+        				console.log(err);
+        				res.status(400);
+        				res.end();
+        			}
+    		        res.status(200);
+    		        res.end();
+        		});
+        	});
         },
         
 		'delete': function (req, res) {

@@ -109,8 +109,28 @@ var answer = function (req, res) {
     	},
     	
         put: function (req, res) {
+        	res.setHeader('Content-Type', 'application/json');
+        	req.models.answer.get(req.params.aid, function(err, answers) {
+        		var answer = req.body['answer'];
+        		if (answer.answer) {
+        			answers.answer = answer.answer;
+        		}
+        		if (answer.vote) {
+        			answers.vote = answer.vote;
+        		}
+        		answers.last_modified = new Date();
+        		answers.save(function (err) {
+        			if (err) {
+        				console.log(err);
+        				res.status(400);
+        				res.end();
+        			}
+    		        res.status(200);
+    		        res.end();
+        		});
+        	});
         },
-        
+
         'delete': function (req, res) {
         	req.models.answer.find({ id: req.params.aid, question_id: req.params.qid }).remove(function (err) {
         		if (err) {
