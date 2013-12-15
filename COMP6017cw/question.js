@@ -112,7 +112,8 @@ var question = function (req, res) {
     			}
     			if (question.vote) {
     				questions.vote = question.vote;
-    			}    			
+    			}
+    			questions.last_modified = new Date();
     			questions.save(function (err) {
     				if (err){
     		        	console.log(err);

@@ -66,7 +66,14 @@ var root = function (req, res) {
         },
         
         'delete': function (req, res) {
-        	
+        	req.models.answer.find({ question_id: req.params.qid }).remove(function (err) {
+        		if (err) {
+        			res.status(400);
+        			res.end();
+        		}
+        		res.status(204);
+        		res.end();
+        	});        		
         },
         
     	head: function (req, res) {
