@@ -49,9 +49,9 @@ var root = function (req, res) {
             }
             question = req.body.question;
             if (!question || !question.title || !question.body) {
-            	res.status(400);
-            	res.end();
-            	return;
+                res.status(400);
+                res.end();
+                return;
             }
             req.models.question.create([
                 {
@@ -137,12 +137,11 @@ var question = function (req, res) {
                     res.status(404);
                     res.end();
                     return;
-                    
                 }
                 if (!question) {
-                	res.status(400);
-                	res.end();
-                	return;
+                    res.status(400);
+                    res.end();
+                    return;
                 }
                 if (question.title) {
                     questions.title = question.title;

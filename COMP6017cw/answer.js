@@ -8,11 +8,11 @@ var root = function (req, res) {
         get: function (req, res) {
             res.setHeader('Content-Type', 'application/json');
             req.models.question.get(req.params.qid, function (err, question) {
-            	if (err) {
-            		res.status(404)
-            		res.end();
-            		return;
-            	}
+                if (err) {
+                    res.status(404);
+                    res.end();
+                    return;
+                }
             });
             req.models.answer.find({ question_id : req.params.qid }, [ "vote", "Z" ], function (err, answers) {
                 var a,
@@ -163,24 +163,24 @@ var answer = function (req, res) {
         },
 
         'delete': function (req, res) {
-            req.models.answer.get(req.params.aid, function(err, answer) {
-	            if (err) {
-	                console.error(err);
-	                res.status(404);
-	                res.end();
-	                return;
-	            }
-	            answer.remove(function (err) {
-	                if (err) {
-	                    console.error(err);
-	                    res.status(500);
-	                    res.end();
-	                    return;
-	                }
-	                res.status(204);
-	                res.end();
-	            });
-           	});
+            req.models.answer.get(req.params.aid, function (err, answer) {
+                if (err) {
+                    console.error(err);
+                    res.status(404);
+                    res.end();
+                    return;
+                }
+                answer.remove(function (err) {
+                    if (err) {
+                        console.error(err);
+                        res.status(500);
+                        res.end();
+                        return;
+                    }
+                    res.status(204);
+                    res.end();
+                });
+            });
         },
 
         head: function (req, res) {

@@ -8,11 +8,11 @@ var root = function (req, res) {
         get: function (req, res) {
             res.setHeader('Content-Type', 'application/json');
             req.models.answer.get(req.params.aid, function (err, question) {
-            	if (err) {
-            		res.status(404)
-            		res.end();
-            		return;
-            	}
+                if (err) {
+                    res.status(404);
+                    res.end();
+                    return;
+                }
             });
             req.models.answer_comment.find({ answer_id : req.params.aid }, function (err, comments) {
                 var c,
@@ -57,9 +57,9 @@ var root = function (req, res) {
             }
             comment = req.body.comment;
             if (!comment || !comment.comment) {
-            	res.status(400);
-            	res.end();
-            	return;
+                res.status(400);
+                res.end();
+                return;
             }
             req.models.answer_comment.create([
                 {
@@ -141,9 +141,9 @@ var comment = function (req, res) {
                 var comment = req.body.comment;
                 //Check for malformed argument
                 if (!comment || !comment.comment) {
-                	res.status(400);
-                	res.end();
-                	return;
+                    res.status(400);
+                    res.end();
+                    return;
                 }
                 if (err) {
                     console.error(err);
@@ -166,23 +166,23 @@ var comment = function (req, res) {
 
         'delete': function (req, res) {
             req.models.answer_comment.get(req.params.cid, function (err, answer_comment) {
-				if (err) {
-	                console.error(err);
-	                res.status(404);
-	                res.end();
-	                return;
-	            }
-	            answer_comment.remove(function (err) {
-	                if (err) {
-	                    console.error(err);
-	                    res.status(500);
-	                    res.end();
-	                    return;
-	                }
-	                res.status(204);
-	                res.end();
-	            });
-          	});
+                if (err) {
+                    console.error(err);
+                    res.status(404);
+                    res.end();
+                    return;
+                }
+                answer_comment.remove(function (err) {
+                    if (err) {
+                        console.error(err);
+                        res.status(500);
+                        res.end();
+                        return;
+                    }
+                    res.status(204);
+                    res.end();
+                });
+            });
         },
 
         head: function (req, res) {
