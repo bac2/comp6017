@@ -22,7 +22,7 @@ var root = function (req, res) {
                     since_date,
                     reply = false;
                 if (err) {
-                        //Not found
+                    //Not found
                     console.error(err);
                     res.status(404);
                     res.end();
@@ -119,7 +119,7 @@ var comment = function (req, res) {
             req.models.question_comment.get(req.params.cid, function (err, comment) {
                 var since_date;
                 if (err || !comment) {
-                        //Comment doesn't exist
+                    //Comment doesn't exist
                     console.error(err);
                     res.status(404);
                     res.end();

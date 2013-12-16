@@ -21,7 +21,7 @@ var root = function (req, res) {
                     since_date,
                     reply = false;
                 if (err) {
-                        //Comments doesn't exist
+                    //Comments doesn't exist
                     console.error(err);
                     res.status(500);
                     res.end();
@@ -118,7 +118,7 @@ var comment = function (req, res) {
             req.models.answer_comment.get(req.params.cid, function (err, comment) {
                 var since_date;
                 if (err) {
-                        //The comment doesn't exist
+                    //The comment doesn't exist
                     console.error(err);
                     res.status(404);
                     res.end();

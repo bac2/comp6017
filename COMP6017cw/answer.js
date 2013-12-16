@@ -38,7 +38,7 @@ var root = function (req, res) {
                         res.end();
                     }
                 }
-                                //Build the output
+                //Build the output
                 for (a = 0; a < answers.length; a = a + 1) {
                     answers[a]._links = {question: "/question/" + answers[a].question_id + "/", comment: "/question/" + answers[a].question_id + "/answer/" + answers[a].id + "/comment"};
                     array.push(answers[a]);
@@ -172,7 +172,7 @@ var answer = function (req, res) {
         'delete': function (req, res) {
             req.models.answer.get(req.params.aid, function (err, answer) {
                 if (err) {
-                        //Answer didn't exist
+                    //Answer didn't exist
                     console.error(err);
                     res.status(404);
                     res.end();
