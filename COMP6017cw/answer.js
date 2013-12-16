@@ -31,7 +31,7 @@ var root = function (req, res) {
     	        }
                 
                 for (a = 0; a < answers.length; a = a + 1) {
-                    answers[a]['_links'] = {question: "/question/" + answers[a].question_id + "/", comment: "/question/" + answers[a].question_id + "/answer/" + a + "/comment"};
+                    answers[a]['_links'] = {question: "/question/" + answers[a].question_id + "/", comment: "/question/" + answers[a].question_id + "/answer/" + answers[a].id + "/comment"};
                     array.push(answers[a]);
                 }
                 res.write(JSON.stringify(array) + "\n");
