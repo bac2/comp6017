@@ -10,7 +10,7 @@ var express = require('express'),
 
 var app = express();
 
-app.use(orm.express("sqlite://"+__dirname+"/../database/sqlite.db", {
+app.use(orm.express("sqlite://" + __dirname + "/../database/sqlite.db", {
     define: function (db, models, next) {
         db.driver.execQuery("PRAGMA foreign_keys = ON;", function (err, data) {
             if (err) {

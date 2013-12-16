@@ -21,12 +21,12 @@ var root = function (req, res) {
                     since_date = new Date(req.header("if-modified-since"));
                     for (q = 0; q < questions.length; q = q + 1) {
                         if (questions[q].last_modified > since_date) {
-							reply = true;
+                            reply = true;
                         }
                     }
                     if (!reply) {
-                    	res.status(304);
-                    	res.end();
+                        res.status(304);
+                        res.end();
                     }
                 }
                 for (q = 0; q < questions.length; q = q + 1) {
@@ -40,13 +40,14 @@ var root = function (req, res) {
 
         post: function (req, res) {
             res.setHeader('Content-Type', 'application/json');
-            var content_type = req.header('content-type');
-            if (content_type.toLowerCase() !== 'application/json'){
-                    res.status(415);
-                    res.end();
-                    return;
+            var content_type = req.header('content-type'),
+                question;
+            if (content_type.toLowerCase() !== 'application/json') {
+                res.status(415);
+                res.end();
+                return;
             }
-            var question = req.body.question;
+            question = req.body.question;
             req.models.question.create([
                 {
                     title: question.title,
@@ -74,7 +75,7 @@ var root = function (req, res) {
         'delete': function (req, res) {
             req.models.question.find().remove(function (err) {
                 if (err) {
-                	console.error(err);
+                    console.error(err);
                     res.status(400);
                     res.end();
                 }
@@ -98,7 +99,7 @@ var question = function (req, res) {
             req.models.question.get(req.params.qid, function (err, question) {
                 var since_date;
                 if (err) {
-                	console.error(err);
+                    console.error(err);
                     res.status(404);
                     res.end();
                 }
@@ -118,16 +119,15 @@ var question = function (req, res) {
         put: function (req, res) {
             res.setHeader('Content-Type', 'application/json');
             var content_type = req.header('content-type');
-            if (content_type.toLowerCase() !== 'application/json'){
-                    res.status(415);
-                    res.end();
-                    return;
+            if (content_type.toLowerCase() !== 'application/json') {
+                res.status(415);
+                res.end();
+                return;
             }
             req.models.question.get(req.params.qid, function (err, questions) {
                 var question = req.body.question;
-                
                 if (err) {
-                	console.error(err);
+                    console.error(err);
                 }
                 if (question.text) {
                     questions.question = question.text;
@@ -151,7 +151,7 @@ var question = function (req, res) {
         'delete': function (req, res) {
             req.models.question.get(req.params.qid, function (err, question) {
                 if (err) {
-                	console.error(err);
+                    console.error(err);
                     res.status(400);
                     res.end();
                 }

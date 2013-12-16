@@ -13,7 +13,7 @@ var root = function (req, res) {
                     since_date,
                     reply = false;
                 if (err) {
-					console.error(err);
+                    console.error(err);
                     res.status(500);
                     res.end();
                 }
@@ -21,12 +21,12 @@ var root = function (req, res) {
                     since_date = new Date(req.header("if-modified-since"));
                     for (c = 0; c < comments.length; c = c + 1) {
                         if (comments[c].last_modified < since_date) {
-							reply = true;
+                            reply = true;
                         }
                     }
                     if (!reply) {
-                    	res.status(304);
-                    	res.end();
+                        res.status(304);
+                        res.end();
                     }
                 }
                 for (c = 0; c < comments.length; c = c + 1) {
@@ -40,13 +40,14 @@ var root = function (req, res) {
 
         post: function (req, res) {
             res.setHeader('Content-Type', 'application/json');
-            var content_type = req.header('content-type');
-            if (content_type.toLowerCase() !== 'application/json'){
-                    res.status(415);
-                    res.end();
-                    return;
+            var content_type = req.header('content-type'),
+                comment;
+            if (content_type.toLowerCase() !== 'application/json') {
+                res.status(415);
+                res.end();
+                return;
             }
-            var comment = req.body.comment;
+            comment = req.body.comment;
             req.models.answer_comment.create([
                 {
                     answer_id: req.params.aid,
@@ -57,7 +58,7 @@ var root = function (req, res) {
                 var i,
                     item;
                 if (err) {
-					console.error(err);
+                    console.error(err);
                     res.status(400);
                     res.end();
                 }
@@ -73,7 +74,7 @@ var root = function (req, res) {
         'delete': function (req, res) {
             req.models.answer_comment.find({answer_id: req.params.aid}).remove(function (err) {
                 if (err) {
-					console.error(err);
+                    console.error(err);
                     res.status(400);
                     res.end();
                 }
@@ -97,7 +98,7 @@ var comment = function (req, res) {
             req.models.answer_comment.get(req.params.cid, function (err, comment) {
                 var since_date;
                 if (err) {
-					console.error(err);
+                    console.error(err);
                     res.status(404);
                     res.end();
                     return;
@@ -118,15 +119,15 @@ var comment = function (req, res) {
         put: function (req, res) {
             res.setHeader('Content-Type', 'application/json');
             var content_type = req.header('content-type');
-            if (content_type.toLowerCase() !== 'application/json'){
-                    res.status(415);
-                    res.end();
-                    return;
+            if (content_type.toLowerCase() !== 'application/json') {
+                res.status(415);
+                res.end();
+                return;
             }
             req.models.answer_comment.get(req.params.cid, function (err, comments) {
                 var comment = req.body.comment;
                 if (err) {
-                	console.error(err);
+                    console.error(err);
                 }
                 if (comment.comment) {
                     comments.comment = comment.comment;
@@ -147,7 +148,7 @@ var comment = function (req, res) {
         'delete': function (req, res) {
             req.models.answer_comment.find({id: req.params.aid, answer_id: req.params.aid}).remove(function (err) {
                 if (err) {
-					console.error(err);
+                    console.error(err);
                     res.status(400);
                     res.end();
                 }

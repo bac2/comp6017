@@ -1,6 +1,6 @@
 /*jslint devel: true, node: true, nomen: true, unparam: true, sloppy: true */
 
-var	utils = require(__dirname + "/utils.js");
+var utils = require(__dirname + "/utils.js");
 
 var root = function (req, res) {
     utils.restful(req, res, {
@@ -13,7 +13,7 @@ var root = function (req, res) {
                     since_date,
                     reply = false;
                 if (err) {
-					console.error(err);
+                    console.error(err);
                     res.status(500);
                     res.end();
                 }
@@ -21,12 +21,12 @@ var root = function (req, res) {
                     since_date = new Date(req.header("if-modified-since"));
                     for (a = 0; a < answers.length; a = a + 1) {
                         if (answers[a].last_modified < since_date) {
-							reply = true;
+                            reply = true;
                         }
                     }
                     if (!reply) {
-                    	res.status(304);
-                    	res.end();
+                        res.status(304);
+                        res.end();
                     }
                 }
 
@@ -41,13 +41,14 @@ var root = function (req, res) {
 
         post: function (req, res) {
             res.setHeader('Content-Type', 'application/json');
-            var content_type = req.header('content-type');
-            if (content_type.toLowerCase() !== 'application/json'){
-                    res.status(415);
-                    res.end();
-                    return;
+            var content_type = req.header('content-type'),
+                answer;
+            if (content_type.toLowerCase() !== 'application/json') {
+                res.status(415);
+                res.end();
+                return;
             }
-            var answer = req.body.answer;
+            answer = req.body.answer;
             req.models.answer.create([
                 {
                     answer: answer.answer,
@@ -75,7 +76,7 @@ var root = function (req, res) {
         'delete': function (req, res) {
             req.models.answer.find({ question_id: req.params.qid }).remove(function (err) {
                 if (err) {
-                	console.error(err);
+                    console.error(err);
                     res.status(400);
                     res.end();
                 }
@@ -99,15 +100,15 @@ var answer = function (req, res) {
             req.models.answer.find({ id : req.params.aid, question_id : req.params.qid }, function (err, answer) {
                 var since_date;
                 if (err) {
-                	console.error(err);
+                    console.error(err);
                     res.status(404);
                     res.end();
                 }
-				if (answer.length === 0) {
+                if (answer.length === 0) {
                     res.status(404);
                     res.end();
                 } else {
-                	answer = answer[0];
+                    answer = answer[0];
                 }
                 if (req.header("if-modified-since")) {
                     since_date = new Date(req.header("if-modified-since"));
@@ -125,17 +126,16 @@ var answer = function (req, res) {
         put: function (req, res) {
             res.setHeader('Content-Type', 'application/json');
             var content_type = req.header('content-type');
-            if (content_type.toLowerCase() !== 'application/json'){
-                    res.status(415);
-                    res.end();
-                    return;
+            if (content_type.toLowerCase() !== 'application/json') {
+                res.status(415);
+                res.end();
+                return;
             }
             req.models.answer.get(req.params.aid, function (err, answers) {
                 var answer = req.body.answer;
                 if (err) {
-                	console.error(err);
+                    console.error(err);
                 }
-                
                 if (answer.answer) {
                     answers.answer = answer.answer;
                 }
