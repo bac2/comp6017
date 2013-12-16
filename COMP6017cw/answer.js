@@ -41,6 +41,12 @@ var root = function (req, res) {
 
         post: function (req, res) {
             res.setHeader('Content-Type', 'application/json');
+            var content_type = req.header('content-type');
+            if (content_type.toLowerCase() !== 'application/json'){
+                    res.status(415);
+                    res.end();
+                    return;
+            }
             var answer = req.body.answer;
             req.models.answer.create([
                 {
@@ -118,6 +124,12 @@ var answer = function (req, res) {
 
         put: function (req, res) {
             res.setHeader('Content-Type', 'application/json');
+            var content_type = req.header('content-type');
+            if (content_type.toLowerCase() !== 'application/json'){
+                    res.status(415);
+                    res.end();
+                    return;
+            }
             req.models.answer.get(req.params.aid, function (err, answers) {
                 var answer = req.body.answer;
                 if (err) {

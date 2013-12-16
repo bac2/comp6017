@@ -40,6 +40,12 @@ var root = function (req, res) {
 
         post: function (req, res) {
             res.setHeader('Content-Type', 'application/json');
+            var content_type = req.header('content-type');
+            if (content_type.toLowerCase() !== 'application/json'){
+                    res.status(415);
+                    res.end();
+                    return;
+            }
             var comment = req.body.comment;
             req.models.answer_comment.create([
                 {
@@ -111,6 +117,12 @@ var comment = function (req, res) {
 
         put: function (req, res) {
             res.setHeader('Content-Type', 'application/json');
+            var content_type = req.header('content-type');
+            if (content_type.toLowerCase() !== 'application/json'){
+                    res.status(415);
+                    res.end();
+                    return;
+            }
             req.models.answer_comment.get(req.params.cid, function (err, comments) {
                 var comment = req.body.comment;
                 if (err) {
